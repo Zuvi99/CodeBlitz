@@ -6,7 +6,7 @@ function CodeEditor() {
     return (
         <Editor
             height="500px"
-            defaultLanguage="javascript"
+            defaultLanguage="java"
             theme={colorMode === "light" ? "vs-light" : "vs-dark"}
         />
     )
