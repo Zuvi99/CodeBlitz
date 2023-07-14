@@ -7,18 +7,18 @@ import {
     MenuItemOption,
     MenuOptionGroup,
     MenuList,
-    Switch, Textarea,
-    useColorMode, VStack,
+    Textarea,
+    useColorMode, VStack, Card, CardBody
 } from "@chakra-ui/react";
 import {ChevronDownIcon} from "@chakra-ui/icons";
 import {BsFillPlayFill} from "react-icons/bs";
-// import CodeEditor from "./CodeEditor.tsx";
 import {useMemo, useState} from "react";
 import Editor from "@monaco-editor/react";
+import {IoCopy} from "react-icons/io5";
 
 // import CodeEditor from "./editor.tsx";
 
-type SupportedLanguage = "javascript" | "java" | "python" | "c++"
+type SupportedLanguage = "javascript" | "java" | "python" | "kotlin"
 
 const SampleCode: Record<SupportedLanguage, string> = {
     "javascript":  `function hello() {
@@ -29,8 +29,10 @@ const SampleCode: Record<SupportedLanguage, string> = {
         System.out.println("Hello world!");
     }
 }`,
-    "python": "//python",
-    "c++": "//c++",
+    "python": `print("Hello world!");`,
+    "kotlin": `fun main(args : Array<String>) {
+    println("Hello world!")
+}`,
 }
 
 
@@ -39,8 +41,14 @@ function App() {
     const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>("javascript");
     const sampleCode = useMemo(() => SampleCode[selectedLanguage], [selectedLanguage])
 
+    const [selectedExecutor, setSelectedExecutor] = useState<string>("Judge0");
+
     const handleLanguageChange = (language : SupportedLanguage) => {
         setSelectedLanguage(language);
+    };
+
+    const handleExecutorChange = (executor : string) => {
+        setSelectedExecutor(executor);
     };
 
     console.log(selectedLanguage);
@@ -48,85 +56,126 @@ function App() {
 
     return (
         <>
-            <div>
-                <Heading paddingTop={'40px'} paddingLeft={'80px'}>CodeSculpt</Heading>
-            </div>
-                <HStack w={'100%'} paddingLeft={'80px'} paddingTop={'40px'} spacing={4}>
-                    <Box w={'65%'}>
-                        <VStack>
-                            <HStack w='100%' padding={'10px'} justify={'space-between'} border={'1px'} borderColor={'grey'} borderRadius={'md'}>
-                                <Box>
+            <HStack w={'100%'} paddingLeft={'80px'} paddingTop={'20px'} spacing={4}>
+                <Box w={'65%'}>
+                    <VStack>
+                        <Box paddingTop={'20px'} w={'100%'}>
+                            <Card variant={'outline'}>
+                                <CardBody>
+                                    <Heading>CodeSculpt</Heading>
+                                </CardBody>
+                            </Card>
+                        </Box>
+                        <Card w='100%' variant={'outline'}>
+                            <CardBody>
+                                <HStack justify={'space-between'}>
+                                    <Box>
+                                        <Menu>
+                                            <MenuButton
+                                                as={Button}
+                                                rightIcon={<ChevronDownIcon/>}>
+                                                Language: {selectedLanguage}
+                                            </MenuButton>
+                                            <MenuList>
+                                                <MenuOptionGroup defaultValue={"javascript"} type={"radio"}>
+                                                    <MenuItemOption
+                                                        onClick={() => handleLanguageChange("java")}
+                                                        value={"java"}
+                                                    >Java</MenuItemOption>
+                                                    <MenuItemOption
+                                                        onClick={() => handleLanguageChange("python")}
+                                                        value={"python"}
+                                                    >Python</MenuItemOption>
+                                                    <MenuItemOption
+                                                        onClick={() => handleLanguageChange("javascript")}
+                                                        value={"javascript"}
+                                                    >JavaScript</MenuItemOption>
+                                                    <MenuItemOption
+                                                        onClick={() => handleLanguageChange("kotlin")}
+                                                        value={"kotlin"}
+                                                    >Kotlin</MenuItemOption>
+                                                </MenuOptionGroup>
+                                            </MenuList>
+                                        </Menu>
+                                    </Box>
+                                    <Box>
+                                        <Button justifySelf={"flex-end"} rightIcon={<BsFillPlayFill/>}>
+                                            Run
+                                        </Button>
+                                    </Box>
+                                </HStack>
+                            </CardBody>
+                        </Card>
+                        <Box
+                            w={'100%'}
+                        >
+                            <Card w={'100%'} variant={'outline'}>
+                                <CardBody>
+                                    <Editor
+                                        height="500px"
+                                        language={selectedLanguage}
+                                        value={sampleCode}
+                                        theme={colorMode === "light" ? "vs-light" : "vs-dark"}
+                                        options={{ fontSize: 15 }}
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Box>
+                        <Card  w={'100%'} variant={"outline"}>
+                            <CardBody>
+                                <HStack gap={25}>
+                                    <Box>
+                                        <Textarea w={'200px'} placeholder={"Standard Input"}/>
+                                    </Box>
+                                    <Box>
+                                        <Textarea w={'200px'} placeholder={"Command Line Arguments"}/>
+                                    </Box>
+                                </HStack>
+                            </CardBody>
+                        </Card>
+                        <Box w={"100%"}>
+                            <Button size={"md"} onClick={toggleColorMode}>
+                                {colorMode === 'light' ? 'Dark' : 'Light'} Mode
+                            </Button>
+                        </Box>
+                    </VStack>
+                </Box>
+                <Box>
+                    <Card variant={'outline'}>
+                        <CardBody>
+                            <VStack spacing={10}>
+                                <Box w={'100%'}>
                                     <Menu>
                                         <MenuButton
                                             as={Button}
                                             rightIcon={<ChevronDownIcon/>}>
-                                            Language: {selectedLanguage}
+                                            API: {selectedExecutor}
                                         </MenuButton>
                                         <MenuList>
-                                            <MenuOptionGroup defaultValue={"javascript"} type={"radio"}>
+                                            <MenuOptionGroup defaultValue={"Judge0"} type={"radio"}>
                                                 <MenuItemOption
-                                                    onClick={() => handleLanguageChange("java")}
-                                                    value={"java"}
-                                                >Java</MenuItemOption>
+                                                    onClick={() => handleExecutorChange("Judge0")}
+                                                    value={"Judge0"}
+                                                >Judge0</MenuItemOption>
                                                 <MenuItemOption
-                                                    onClick={() => handleLanguageChange("python")}
-                                                    value={"python"}
-                                                >Python</MenuItemOption>
-                                                <MenuItemOption
-                                                    onClick={() => handleLanguageChange("javascript")}
-                                                    value={"javascript"}
-                                                >JavaScript</MenuItemOption>
-                                                <MenuItemOption
-                                                    onClick={() => handleLanguageChange("c++")}
-                                                    value={"c++"}
-                                                >C++</MenuItemOption>
+                                                    onClick={() => handleExecutorChange("Piston")}
+                                                    value={"Piston"}
+                                                >Piston</MenuItemOption>
                                             </MenuOptionGroup>
                                         </MenuList>
                                     </Menu>
                                 </Box>
                                 <Box>
-                                    <Button justifySelf={"flex-end"} rightIcon={<BsFillPlayFill/>}>
-                                        Run
-                                    </Button>
+                                    <Textarea placeholder={"Result"}/>
                                 </Box>
-                            </HStack>
-                            <Box w={'100%'} paddingTop={'20px'} paddingBottom={'20px'} border={'1px'} borderColor={'gray'} borderRadius={'md'}>
-                                <Editor
-                                    height="500px"
-                                    language={selectedLanguage}
-                                    value={sampleCode}
-                                    theme={colorMode === "light" ? "vs-light" : "vs-dark"}
-                                />
-                            </Box>
-                            <HStack w={'100%'} gap={25}>
-                                <Box>
-                                    <Textarea w={'200px'} placeholder={"Standard Input"}/>
+                                <Box w={'100%'}>
+                                    <Button rightIcon={<IoCopy/>}>Copy code to clipboard</Button>
                                 </Box>
-                                <Box>
-                                    <Textarea w={'200px'} placeholder={"Command Line Arguments"}/>
-                                </Box>
-                            </HStack>
-                            <Box w={"100%"} paddingTop={'50px'}>
-                                <Switch colorScheme={"red"} size={"md"} onChange={toggleColorMode}>
-                                    {colorMode === 'light' ? 'Dark' : 'Light'} Mode
-                                </Switch>
-                            </Box>
-                        </VStack>
-                    </Box>
-                    <Box border={'1px'} borderColor={'gray'} borderRadius={'md'}>
-                        <VStack padding={'20px'}>
-                            <Box paddingBottom={'400px'}>
-                                <Textarea placeholder={"Result"}/>
-                            </Box>
-                            <Box alignSelf={'flex-end'}>
-                                <Textarea placeholder={"Feedback"}/>
-                            </Box>
-                            <Box w={'100%'}>
-                                <Button>Share Feedback</Button>
-                            </Box>
-                        </VStack>
-                    </Box>
-                </HStack>
+                            </VStack>
+                        </CardBody>
+                    </Card>
+                </Box>
+            </HStack>
         </>
     )
 }
