@@ -5,16 +5,47 @@ import {
     Menu,
     MenuButton,
     MenuItemOption,
+    MenuOptionGroup,
     MenuList,
-    MenuOptionGroup, Switch, Textarea,
+    Switch, Textarea,
     useColorMode, VStack,
 } from "@chakra-ui/react";
 import {ChevronDownIcon} from "@chakra-ui/icons";
 import {BsFillPlayFill} from "react-icons/bs";
-import CodeEditor from "./editor.tsx";
+// import CodeEditor from "./CodeEditor.tsx";
+import {useMemo, useState} from "react";
+import Editor from "@monaco-editor/react";
+
+// import CodeEditor from "./editor.tsx";
+
+type SupportedLanguage = "javascript" | "java" | "python" | "c++"
+
+const SampleCode: Record<SupportedLanguage, string> = {
+    "javascript":  `function hello() {
+	alert('Hello world!');
+}`,
+    "java": `public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+}`,
+    "python": "//python",
+    "c++": "//c++",
+}
+
+
 function App() {
     const {colorMode, toggleColorMode} = useColorMode()
-    console.log(colorMode)
+    const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>("javascript");
+    const sampleCode = useMemo(() => SampleCode[selectedLanguage], [selectedLanguage])
+
+    const handleLanguageChange = (language : SupportedLanguage) => {
+        setSelectedLanguage(language);
+    };
+
+    console.log(selectedLanguage);
+    console.log(colorMode);
+
     return (
         <>
             <div>
@@ -29,14 +60,26 @@ function App() {
                                         <MenuButton
                                             as={Button}
                                             rightIcon={<ChevronDownIcon/>}>
-                                            Select a Language
+                                            Language: {selectedLanguage}
                                         </MenuButton>
                                         <MenuList>
-                                            <MenuOptionGroup defaultValue={'java'} type={'radio'}>
-                                                <MenuItemOption value='java'>Java</MenuItemOption>
-                                                <MenuItemOption value='python'>Python</MenuItemOption>
-                                                <MenuItemOption value='js'>JavaScript</MenuItemOption>
-                                                <MenuItemOption value='c++'>C++</MenuItemOption>
+                                            <MenuOptionGroup defaultValue={"javascript"} type={"radio"}>
+                                                <MenuItemOption
+                                                    onClick={() => handleLanguageChange("java")}
+                                                    value={"java"}
+                                                >Java</MenuItemOption>
+                                                <MenuItemOption
+                                                    onClick={() => handleLanguageChange("python")}
+                                                    value={"python"}
+                                                >Python</MenuItemOption>
+                                                <MenuItemOption
+                                                    onClick={() => handleLanguageChange("javascript")}
+                                                    value={"javascript"}
+                                                >JavaScript</MenuItemOption>
+                                                <MenuItemOption
+                                                    onClick={() => handleLanguageChange("c++")}
+                                                    value={"c++"}
+                                                >C++</MenuItemOption>
                                             </MenuOptionGroup>
                                         </MenuList>
                                     </Menu>
@@ -48,7 +91,12 @@ function App() {
                                 </Box>
                             </HStack>
                             <Box w={'100%'} paddingTop={'20px'} paddingBottom={'20px'} border={'1px'} borderColor={'gray'} borderRadius={'md'}>
-                                <CodeEditor />
+                                <Editor
+                                    height="500px"
+                                    language={selectedLanguage}
+                                    value={sampleCode}
+                                    theme={colorMode === "light" ? "vs-light" : "vs-dark"}
+                                />
                             </Box>
                             <HStack w={'100%'} gap={25}>
                                 <Box>
