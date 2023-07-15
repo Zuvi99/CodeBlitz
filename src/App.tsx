@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import {ChevronDownIcon} from "@chakra-ui/icons";
 import {BsFillPlayFill} from "react-icons/bs";
-import {useMemo, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import Editor, {Monaco} from "@monaco-editor/react";
 import {IoCopy} from "react-icons/io5";
 import {editor} from "monaco-editor";
@@ -41,6 +41,8 @@ function App() {
     const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>("javascript");
     const sampleCode = useMemo(() => SampleCode[selectedLanguage], [selectedLanguage])
 
+    const existingCode = localStorage.getItem("editorText");
+
     const [selectedExecutor, setSelectedExecutor] = useState<string>("Judge0");
 
     const handleLanguageChange = (language : SupportedLanguage) => {
@@ -56,9 +58,30 @@ function App() {
     function handleEditorDidMount(editor: IStandaloneCodeEditor, _monaco: Monaco): void {
         editorRef.current = editor
     }
-    function showEditorCode() {
-        alert(sampleCode);
-        console.log(sampleCode);
+    function copyEditorCode() {
+        if (editorRef.current) {
+            const selectedText = editorRef.current.getValue();
+            if (selectedText) {
+                navigator.clipboard.writeText(selectedText)
+                    .then(() => {
+                        console.log("Text copied to clipboard:", selectedText);
+                    })
+                    .catch((error) => {
+                        console.error("Failed to copy text to clipboard:", error);
+                    });
+            }
+        }
+    }
+
+    useEffect(() => {
+        const savedText = localStorage.getItem("editorText");
+        if (editorRef.current && savedText) {
+            editorRef.current.setValue(savedText);
+        }
+    }, [])
+
+    const handleTextChange = (value : string | undefined) => {
+        value && localStorage.setItem("editorText", value);
     }
     return (
         <>
@@ -106,7 +129,7 @@ function App() {
                                     </Box>
                                     <Box>
                                         <HStack spacing={'24px'}>
-                                            <Button rightIcon={<IoCopy/>} onClick={showEditorCode}>Copy code to clipboard</Button>
+                                            <Button rightIcon={<IoCopy/>} onClick={copyEditorCode}>Copy code to clipboard</Button>
                                             <Button rightIcon={<BsFillPlayFill/>}>
                                                 Run
                                             </Button>
@@ -123,8 +146,9 @@ function App() {
                                     <Editor
                                         height="500px"
                                         language={selectedLanguage}
-                                        value={sampleCode}
+                                        value={existingCode || sampleCode}
                                         theme={colorMode === "light" ? "vs-light" : "vs-dark"}
+                                        onChange={handleTextChange}
                                         onMount={handleEditorDidMount}
                                         options={{ fontSize: 15 }}
                                     />
