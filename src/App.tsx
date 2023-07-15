@@ -16,34 +16,17 @@ import {
 } from "@chakra-ui/react";
 import {ChevronDownIcon} from "@chakra-ui/icons";
 import {BsFillPlayFill} from "react-icons/bs";
-import {useMemo, useRef, useState} from "react";
-import Editor, {Monaco} from "@monaco-editor/react";
+import {useRef, useState} from "react";
 import {IoCopy} from "react-icons/io5";
 import {editor} from "monaco-editor";
+import {SupportedLanguage} from "./types.ts";
+import CodeEditor from "./CodeEditor.tsx";
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
-
-type SupportedLanguage = "javascript" | "java" | "python" | "kotlin"
-
-const SampleCode: Record<SupportedLanguage, string> = {
-    "javascript": `function hello() {
-	alert('Hello world!');
-}`,
-    "java": `public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-    }
-}`,
-    "python": `print("Hello world!");`,
-    "kotlin": `fun main(args : Array<String>) {
-    println("Hello world!")
-}`,
-}
 
 function App() {
     const {colorMode, toggleColorMode} = useColorMode()
 
     const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>("javascript");
-    const sampleCode = useMemo(() => SampleCode[selectedLanguage], [selectedLanguage])
 
 
     const [selectedExecutor, setSelectedExecutor] = useState<string>("Judge0");
@@ -56,11 +39,7 @@ function App() {
         setSelectedExecutor(executor);
     };
 
-    const editorRef = useRef<IStandaloneCodeEditor | null>(null);
-
-    function handleEditorDidMount(editor: IStandaloneCodeEditor, _monaco: Monaco): void {
-        editorRef.current = editor
-    }
+    const editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null> = useRef<IStandaloneCodeEditor | null>(null);
 
     function copyEditorCode() {
         if (editorRef.current) {
@@ -130,18 +109,7 @@ function App() {
                         <Box
                             w={'100%'}
                         >
-                            <Card w={'100%'} variant={'outline'}>
-                                <CardBody>
-                                    <Editor
-                                        height="500px"
-                                        language={selectedLanguage}
-                                        value={sampleCode}
-                                        theme={colorMode === "light" ? "vs-light" : "vs-dark"}
-                                        onMount={handleEditorDidMount}
-                                        options={{fontSize: 15}}
-                                    />
-                                </CardBody>
-                            </Card>
+                            <CodeEditor language={selectedLanguage} editorRef={editorRef}/>
                         </Box>
                         <Card w={'100%'} variant={"outline"}>
                             <CardBody>
