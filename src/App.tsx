@@ -12,11 +12,11 @@ import {
 } from "@chakra-ui/react";
 import {ChevronDownIcon} from "@chakra-ui/icons";
 import {BsFillPlayFill} from "react-icons/bs";
-import {useMemo, useState} from "react";
-import Editor from "@monaco-editor/react";
+import {useMemo, useRef, useState} from "react";
+import Editor, {Monaco} from "@monaco-editor/react";
 import {IoCopy} from "react-icons/io5";
-
-// import CodeEditor from "./editor.tsx";
+import {editor} from "monaco-editor";
+import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
 type SupportedLanguage = "javascript" | "java" | "python" | "kotlin"
 
@@ -35,9 +35,9 @@ const SampleCode: Record<SupportedLanguage, string> = {
 }`,
 }
 
-
 function App() {
     const {colorMode, toggleColorMode} = useColorMode()
+
     const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>("javascript");
     const sampleCode = useMemo(() => SampleCode[selectedLanguage], [selectedLanguage])
 
@@ -51,9 +51,15 @@ function App() {
         setSelectedExecutor(executor);
     };
 
-    console.log(selectedLanguage);
-    console.log(colorMode);
+    const editorRef = useRef<IStandaloneCodeEditor | null>(null);
 
+    function handleEditorDidMount(editor: IStandaloneCodeEditor, _monaco: Monaco): void {
+        editorRef.current = editor
+    }
+    function showEditorCode() {
+        alert(sampleCode);
+        console.log(sampleCode);
+    }
     return (
         <>
             <HStack w={'100%'} paddingLeft={'80px'} paddingTop={'20px'} spacing={4}>
@@ -99,9 +105,12 @@ function App() {
                                         </Menu>
                                     </Box>
                                     <Box>
-                                        <Button justifySelf={"flex-end"} rightIcon={<BsFillPlayFill/>}>
-                                            Run
-                                        </Button>
+                                        <HStack spacing={'24px'}>
+                                            <Button rightIcon={<IoCopy/>} onClick={showEditorCode}>Copy code to clipboard</Button>
+                                            <Button rightIcon={<BsFillPlayFill/>}>
+                                                Run
+                                            </Button>
+                                        </HStack>
                                     </Box>
                                 </HStack>
                             </CardBody>
@@ -116,6 +125,7 @@ function App() {
                                         language={selectedLanguage}
                                         value={sampleCode}
                                         theme={colorMode === "light" ? "vs-light" : "vs-dark"}
+                                        onMount={handleEditorDidMount}
                                         options={{ fontSize: 15 }}
                                     />
                                 </CardBody>
@@ -167,9 +177,6 @@ function App() {
                                 </Box>
                                 <Box>
                                     <Textarea placeholder={"Result"}/>
-                                </Box>
-                                <Box w={'100%'}>
-                                    <Button rightIcon={<IoCopy/>}>Copy code to clipboard</Button>
                                 </Box>
                             </VStack>
                         </CardBody>
