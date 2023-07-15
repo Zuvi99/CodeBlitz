@@ -66,13 +66,7 @@ function App() {
         if (editorRef.current) {
             const selectedText = editorRef.current.getValue();
             if (selectedText) {
-                navigator.clipboard.writeText(selectedText)
-                    .then(() => {
-                        console.log("Text copied to clipboard:", selectedText);
-                    })
-                    .catch((error) => {
-                        console.error("Failed to copy text to clipboard:", error);
-                    });
+                void navigator.clipboard.writeText(selectedText).then();
             }
         }
     }
