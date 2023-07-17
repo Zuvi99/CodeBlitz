@@ -6,7 +6,7 @@ import {editor} from "monaco-editor";
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
 const SampleCode: Record<SupportedLanguage, string> = {
-    "javascript": `function hello() {
+    "javascript": `function main() {
 	alert('Hello world!');
 }`,
     "java": `public class Main {
@@ -18,6 +18,10 @@ const SampleCode: Record<SupportedLanguage, string> = {
     "kotlin": `fun main(args : Array<String>) {
     println("Hello world!")
 }`,
+    "typescript": `function main() {
+    const hello : string = "Hello world!";
+    console.log(hello);
+}`
 }
 
 type CodeEditorProps = {
@@ -32,7 +36,7 @@ const CodeEditor = ({language, editorRef}: CodeEditorProps) => {
     function handleEditorDidMount(editor: IStandaloneCodeEditor, _monaco: Monaco): void {
         editorRef.current = editor
     }
-    return  <Card w={'100%'} variant={'outline'}>
+    return  <Card w={'100%'} variant={'elevated'}>
         <CardBody>
             <Editor
                 height="500px"

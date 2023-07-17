@@ -1,1 +1,3 @@
-export type SupportedLanguage = "javascript" | "java" | "python" | "kotlin"
+export type SupportedLanguage = "javascript" | "java" | "python" | "kotlin" | "typescript"
+
+
