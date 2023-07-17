@@ -61,12 +61,13 @@ function App() {
             }
         }
     }
-        const toast = useToast();
+
+    const toast = useToast();
 
 
     return (
         <>
-            <Card variant={"outline"} paddingLeft={'200px'} paddingRight={'200px'}>
+            <Card variant={"elevated"} paddingLeft={'200px'} paddingRight={'200px'}>
                 <CardBody>
                     <HStack w={'100%'} paddingLeft={'100px'} spacing={4}>
                         <Box w={'65%'}>
@@ -198,7 +199,6 @@ function App() {
                     </HStack>
                 </CardBody>
             </Card>
-
         </>
     )
 }
