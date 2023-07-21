@@ -2,7 +2,7 @@ import {
     Box,
     Button,
     Card,
-    CardBody,
+    CardBody, Grid, GridItem,
     Heading,
     HStack,
     Menu,
@@ -66,9 +66,15 @@ function App() {
 
 
     return (
-        <>
-            <HStack w={'100%'} paddingLeft={'100px'} spacing={4}>
-                <Box w={'65%'}>
+        <Grid
+            templateColumns='repeat(4, 1fr)'
+            // width={'100%'}
+            gap={4}
+            minWidth={'1000px'}
+            margin={'50px'}
+        >
+            <GridItem colSpan={3}>
+                <Box>
                     <VStack>
                         <Box paddingTop={'20px'} w={'100%'}>
                             <Card variant={'elevated'}>
@@ -90,8 +96,8 @@ function App() {
                                             <MenuList>
                                                 <MenuOptionGroup defaultValue={"javascript"} type={"radio"}>
                                                     <MenuItemOption id={'1'}
-                                                        onClick={() => handleLanguageChange("java")}
-                                                        value={"java"}
+                                                                    onClick={() => handleLanguageChange("java")}
+                                                                    value={"java"}
                                                     >Java</MenuItemOption>
                                                     <MenuItemOption
                                                         onClick={() => handleLanguageChange("python")}
@@ -125,77 +131,80 @@ function App() {
                                                             duration: 1500,
                                                             isClosable: true,
                                                         }); copyEditorCode()
-                                                    }}
-                                            >Copy code to clipboard</Button>
-                                            <Button rightIcon={<BsFillPlayFill/>} onClick={getAPI}>
-                                                Run
-                                            </Button>
+                                                            }}
+                                                    >Copy code to clipboard</Button>
+                                                    <Button rightIcon={<BsFillPlayFill/>} onClick={getAPI}>
+                                                        Run
+                                                    </Button>
+                                                </HStack>
+                                            </Box>
                                         </HStack>
-                                    </Box>
-                                </HStack>
-                            </CardBody>
-                        </Card>
-                        <Box
-                            w={'100%'}
-                        >
-                            <CodeEditor language={selectedLanguage} editorRef={editorRef}/>
-                        </Box>
-                        <Card w={'100%'} variant={"elevated"}>
-                            <CardBody>
-                                <HStack gap={25}>
-                                    <Box>
-                                        <Textarea w={'200px'} placeholder={"Standard Input"}/>
-                                    </Box>
-                                    <Box>
-                                        <Textarea w={'200px'} placeholder={"Command Line Arguments"}/>
-                                    </Box>
-                                </HStack>
-                            </CardBody>
-                        </Card>
-                        <Box w={"100%"}>
-                            <Button size={"md"} onClick={toggleColorMode}>
-                                {colorMode === 'light' ? 'Dark' : 'Light'} Mode
-                            </Button>
-                        </Box>
-                    </VStack>
-                </Box>
-                <Box>
-                    <Card variant={'elevated'}>
-                        <CardBody>
-                            <VStack spacing={10}>
-                                <Box w={'100%'}>
-                                    <Menu>
-                                        <MenuButton
-                                            as={Button}
-                                            rightIcon={<ChevronDownIcon/>}>
-                                            API: {selectedExecutor}
-                                        </MenuButton>
-                                        <MenuList>
-                                            <MenuOptionGroup defaultValue={"Judge0"} type={"radio"}>
-                                                <MenuItemOption
-                                                    onClick={() => handleExecutorChange("Judge0")}
-                                                    value={"Judge0"}
-                                                >Judge0</MenuItemOption>
-                                                <MenuItemOption
-                                                    onClick={() => handleExecutorChange("Piston")}
-                                                    value={"Piston"}
-                                                >Piston</MenuItemOption>
-                                            </MenuOptionGroup>
-                                        </MenuList>
-                                    </Menu>
+                                    </CardBody>
+                                </Card>
+                                <Box
+                                    w={'100%'}
+                                >
+                                    <CodeEditor language={selectedLanguage} editorRef={editorRef}/>
                                 </Box>
-                                <Box>
-                                    <Textarea placeholder={"Result"}/>
-                                </Box>
-                                <Box width={"100%"}>
-                                    <Text>Execution Time:</Text>
+                                <Card w={'100%'} variant={"elevated"}>
+                                    <CardBody>
+                                        <HStack gap={25}>
+                                            <Box>
+                                                <Textarea w={'200px'} placeholder={"Standard Input"}/>
+                                            </Box>
+                                            <Box>
+                                                <Textarea w={'200px'} placeholder={"Command Line Arguments"}/>
+                                            </Box>
+                                        </HStack>
+                                    </CardBody>
+                                </Card>
+                                <Box w={"100%"}>
+                                    <Button size={"md"} onClick={toggleColorMode}>
+                                        {colorMode === 'light' ? 'Dark' : 'Light'} Mode
+                                    </Button>
                                 </Box>
                             </VStack>
-                        </CardBody>
-                    </Card>
-                </Box>
-            </HStack>
-        </>
+                        </Box>
+                    </GridItem>
+                    <GridItem paddingTop={'250px'} width={'75%'}>
+                        <Box paddingTop={'20px'}>
+                            <Card variant={'elevated'}>
+                                <CardBody>
+                                    <VStack spacing={10}>
+                                        <Box w={'100%'}>
+                                            <Menu>
+                                                <MenuButton
+                                                    as={Button}
+                                                    rightIcon={<ChevronDownIcon/>}>
+                                                    API: {selectedExecutor}
+                                                </MenuButton>
+                                                <MenuList>
+                                                    <MenuOptionGroup defaultValue={"Judge0"} type={"radio"}>
+                                                        <MenuItemOption
+                                                            onClick={() => handleExecutorChange("Judge0")}
+                                                            value={"Judge0"}
+                                                        >Judge0</MenuItemOption>
+                                                        <MenuItemOption
+                                                            onClick={() => handleExecutorChange("Piston")}
+                                                            value={"Piston"}
+                                                        >Piston</MenuItemOption>
+                                                    </MenuOptionGroup>
+                                                </MenuList>
+                                            </Menu>
+                                        </Box>
+                                        <Box>
+                                            <Textarea placeholder={"Result"} size={'lg'} height={'200px'}/>
+                                        </Box>
+                                        <Box width={"100%"}>
+                                            <Text>Execution Time:</Text>
+                                        </Box>
+                                    </VStack>
+                                </CardBody>
+                            </Card>
+                        </Box>
+                    </GridItem>
+            {/*</HStack>*/}
+        </Grid>
     )
 }
 
