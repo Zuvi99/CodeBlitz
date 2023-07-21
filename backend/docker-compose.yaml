@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  judge0:
+    image: judge0/judge0:1.13.0
+    volumes:
+      - ./judge0.conf:/judge0.conf:ro
+    ports:
+      - "3000:3000"
+
+
+  workers:
+    image: judge0/judge0:1.13.0
+    command: ["./scripts"]
