@@ -1,10 +1,6 @@
 package com.adedoyin.codesculpt.service.executor;
 
 public enum SupportedLanguage {
-    PYTHON("python");
-    private String value;
+    PYTHON, JAVA, JAVASCRIPT, KOTLIN, TYPESCRIPT, DART, RUBY, SCALA, SWIFT, HASKELL, GO
 
-    SupportedLanguage(String value) {
-        this.value = value;
-    }
 }

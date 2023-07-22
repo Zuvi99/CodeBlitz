@@ -11,7 +11,7 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
                                 boolean isSelfHosted) {
     public PistonExecutionData toPiston() {
         return new PistonExecutionData("js", "18.15.0",
-                List.of(new PistonExecutionData.File(Optional.of(""), "console.log('hello world')")));
+                List.of(new PistonExecutionData.File(Optional.of(""), this.sourceCode)));
     }
 
 //    public String getPistonLanguage() {
