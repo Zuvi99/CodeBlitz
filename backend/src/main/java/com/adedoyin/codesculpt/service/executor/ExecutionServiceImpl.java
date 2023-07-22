@@ -2,27 +2,31 @@ package com.adedoyin.codesculpt.service.executor;
 
 
 import com.adedoyin.codesculpt.service.executor.judge0.JudgeExecutionService;
+import com.adedoyin.codesculpt.service.executor.judge0.JudgeResponse;
 import com.adedoyin.codesculpt.service.executor.piston.PistonExecutionService;
+import com.adedoyin.codesculpt.service.executor.piston.PistonResponse;
+import reactor.core.publisher.Mono;
 
 public class ExecutionServiceImpl implements ExecutionService {
 
     private PistonExecutionService pistonExecutionService;
 
-    public ExecutionServiceImpl(PistonExecutionService pistonExecutionService) {
-        this.pistonExecutionService = pistonExecutionService;
-    }
-
     private JudgeExecutionService judgeExecutionService;
 
-    public ExecutionServiceImpl(JudgeExecutionService judgeExecutionService) {
+    public ExecutionServiceImpl(PistonExecutionService pistonExecutionService, JudgeExecutionService judgeExecutionService) {
+        this.pistonExecutionService = pistonExecutionService;
         this.judgeExecutionService = judgeExecutionService;
+
     }
 
+
+
+
     @Override
-    public void executeCode(CodeExecutionData codeExecutionData) {
-        switch (codeExecutionData.executor()) {
-            case JUDGE -> this.judgeExecutionService.execute(codeExecutionData.toJudge()).subscribe(System.out::println);
-            case PISTON -> this.pistonExecutionService.execute(codeExecutionData.toPiston()).subscribe(System.out::println);
-        }
+    public Mono<CodeExecutionResponse> executeCode(CodeExecutionData codeExecutionData) {
+      return  switch (codeExecutionData.executor()) {
+            case JUDGE -> this.judgeExecutionService.execute(codeExecutionData.toJudge()).map(JudgeResponse.Submission::toResponse);
+            case PISTON -> this.pistonExecutionService.execute(codeExecutionData.toPiston()).map(PistonResponse::toResponse);
+        };
     }
 }

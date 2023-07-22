@@ -2,8 +2,10 @@ package com.adedoyin.codesculpt.controller;
 
 
 import com.adedoyin.codesculpt.service.executor.CodeExecutionData;
+import com.adedoyin.codesculpt.service.executor.CodeExecutionResponse;
 import com.adedoyin.codesculpt.service.executor.ExecutionService;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api")
@@ -15,9 +17,9 @@ public class CodeExecutorController {
     }
 
     @PostMapping("/execute")
-    public void execute(@RequestBody CodeExecutionData data) {
+    public Mono<CodeExecutionResponse> execute(@RequestBody CodeExecutionData data) {
         System.out.println(data);
-        executorService.executeCode(data);
+        return executorService.executeCode(data);
     }
 
     @GetMapping("/hello")

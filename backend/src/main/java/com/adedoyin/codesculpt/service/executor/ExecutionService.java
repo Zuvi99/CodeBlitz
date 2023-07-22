@@ -1,6 +1,8 @@
 package com.adedoyin.codesculpt.service.executor;
 
 
+import reactor.core.publisher.Mono;
+
 public interface ExecutionService {
-    void executeCode(CodeExecutionData codeExecutionData);
+    Mono<CodeExecutionResponse> executeCode(CodeExecutionData codeExecutionData);
 }

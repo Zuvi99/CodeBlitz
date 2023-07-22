@@ -14,6 +14,14 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
                 List.of(new PistonExecutionData.File(Optional.of(""), "console.log('hello world')")));
     }
 
+//    public String getPistonLanguage() {
+//       return  switch (this.language) {
+//
+//            case PYTHON -> {
+//            }
+//        }
+//    }
+
     public JudgeExecutionData toJudge() {
         return new JudgeExecutionData("I2luY2x1ZGUgPHN0ZGlvLmg+CgppbnQgbWFpbih2b2lkKSB7CiAgY2hhciBuYW1lWzEwXTsKICBzY2FuZigiJXMiLCBuYW1lKTsKICBwcmludGYoImhlbGxvLCAlc1xuIiwgbmFtZSk7CiAgcmV0dXJuIDA7Cn0=", 52);
     }
