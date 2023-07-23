@@ -34,7 +34,7 @@ function App() {
 	const [selectedLanguage, setSelectedLanguage] =
 		useState<SupportedLanguage>("javascript");
 
-	const [selectedExecutor, setSelectedExecutor] = useState<string>("Judge0");
+	const [selectedExecutor, setSelectedExecutor] = useState<string>("Piston");
 
 	const handleLanguageChange = (language: SupportedLanguage) => {
 		setSelectedLanguage(language);
@@ -76,15 +76,14 @@ function App() {
 	return (
 		<Grid
 			templateColumns="repeat(4, 1fr)"
-			// width={'100%'}
 			gap={4}
 			minWidth={"1000px"}
-			margin={"50px"}
+			margin={"35px"}
 		>
 			<GridItem colSpan={3}>
 				<Box>
 					<VStack>
-						<Box paddingTop={"20px"} w={"100%"}>
+						<Box paddingTop={"10px"} w={"100%"}>
 							<Card variant={"elevated"}>
 								<CardBody>
 									<Heading>CodeSculpt</Heading>
@@ -101,7 +100,6 @@ function App() {
 											</MenuButton>
 											<MenuList>
 												<MenuOptionGroup
-													defaultValue={"javascript"}
 													type={"radio"}
 												>
 													<MenuItemOption
@@ -135,6 +133,12 @@ function App() {
 													>
 														TypeScript
 													</MenuItemOption>
+                                                    <MenuItemOption
+                                                        onClick={() => handleLanguageChange("dart")}
+                                                        value={"dart"}
+                                                    >
+                                                        Dart
+                                                    </MenuItemOption>
 												</MenuOptionGroup>
 											</MenuList>
 										</Menu>
@@ -201,7 +205,7 @@ function App() {
 											API: {selectedExecutor}
 										</MenuButton>
 										<MenuList>
-											<MenuOptionGroup defaultValue={"Judge0"} type={"radio"}>
+											<MenuOptionGroup type={"radio"}>
 												<MenuItemOption
 													onClick={() => handleExecutorChange("Judge0")}
 													value={"Judge0"}

@@ -10,6 +10,6 @@ public record PistonResponse(Run run, String language, String version) {
     }
 
     public CodeExecutionResponse toResponse() {
-        return new CodeExecutionResponse(this.run.stdout);
+        return new CodeExecutionResponse(this.run.output);
     }
 }

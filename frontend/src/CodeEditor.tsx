@@ -6,9 +6,8 @@ import { editor } from "monaco-editor";
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
 const SampleCode: Record<SupportedLanguage, string> = {
-	javascript: `function main() {
-	alert('Hello world!');
-}`,
+	javascript: `var hello = "Hello world!";
+console.log(hello);`,
 	java: `public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
@@ -18,10 +17,11 @@ const SampleCode: Record<SupportedLanguage, string> = {
 	kotlin: `fun main(args : Array<String>) {
     println("Hello world!")
 }`,
-	typescript: `function main() {
-    const hello : string = "Hello world!";
-    console.log(hello);
-}`,
+	typescript: `const hello : string = "Hello world!";
+console.log(hello);`,
+    dart: `void main() {
+  print('Hello, World!');
+}`
 };
 
 type CodeEditorProps = {
