@@ -31,7 +31,7 @@ function App() {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	const [selectedLanguage, setSelectedLanguage] =
-		useState<SupportedLanguage>("javascript");
+		useState<SupportedLanguage>("java");
 
 	const [selectedExecutor, setSelectedExecutor] = useState<string>("Piston");
 
@@ -45,7 +45,9 @@ function App() {
 
     const [executionOutput, setExecutionOutput] = useState<string>("");
 
-
+    const clearTextArea = () => {
+        setExecutionOutput("");
+    }
 
     const executeCode = () => {
         fetch("http://localhost:8080/api/execute", {
@@ -108,43 +110,64 @@ function App() {
 												>
 													<MenuItemOption
 														id={"1"}
-														onClick={() => handleLanguageChange("java")}
+														onClick={() => {
+                                                            handleLanguageChange("java");
+                                                            clearTextArea();
+                                                        }}
 														value={"java"}
 													>
 														Java
 													</MenuItemOption>
 													<MenuItemOption
-														onClick={() => handleLanguageChange("python")}
+														onClick={() => {
+                                                            handleLanguageChange("python");
+                                                            clearTextArea();
+                                                        }}
 														value={"python"}
 													>
 														Python
 													</MenuItemOption>
 													<MenuItemOption
-														onClick={() => handleLanguageChange("javascript")}
+														onClick={() => {
+                                                            handleLanguageChange("javascript");
+                                                            clearTextArea();
+                                                        }}
 														value={"javascript"}
 													>
 														JavaScript
 													</MenuItemOption>
 													<MenuItemOption
-														onClick={() => handleLanguageChange("kotlin")}
+														onClick={() => {
+                                                            handleLanguageChange("kotlin");
+                                                            clearTextArea();
+                                                        }}
 														value={"kotlin"}
 													>
 														Kotlin
 													</MenuItemOption>
 													<MenuItemOption
-														onClick={() => handleLanguageChange("typescript")}
+														onClick={() => {
+                                                            handleLanguageChange("typescript")
+                                                            clearTextArea();
+                                                        }}
 														value={"typescript"}
 													>
 														TypeScript
 													</MenuItemOption>
                                                     <MenuItemOption
-                                                        onClick={() => handleLanguageChange("dart")}
+                                                        onClick={() => {
+                                                            handleLanguageChange("dart");
+                                                            clearTextArea();
+                                                        }}
                                                         value={"dart"}
                                                     >
                                                         Dart
                                                     </MenuItemOption>
                                                     <MenuItemOption
-                                                        onClick={() => handleLanguageChange("cpp")}
+                                                        onClick={() => {
+                                                            handleLanguageChange("cpp");
+                                                            clearTextArea();
+                                                        }}
                                                         value={"cpp"}
                                                     >
                                                         C++
@@ -175,7 +198,7 @@ function App() {
                                                 onClick={() => {
                                                     toast({
                                                         title: "Executing....",
-                                                        status: "success",
+                                                        status: "info",
                                                         position: "top",
                                                         duration: 1000,
                                                         isClosable: true,
