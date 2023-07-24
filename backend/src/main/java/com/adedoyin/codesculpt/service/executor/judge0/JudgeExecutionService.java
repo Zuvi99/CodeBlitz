@@ -15,18 +15,17 @@ public class JudgeExecutionService {
     }
 
     public Mono<JudgeResponse.Submission> execute(JudgeExecutionData data) {
-        Mono<JudgeResponse.SubmissionToken> token = this.webClient.post().uri("/submissions?base64_encoded=true&wait" +
-                        "=false")
+        Mono<JudgeResponse.SubmissionToken> token = this.webClient.post().uri("/submissions?base64_encoded=true")
                 .body(Mono.just(data),
                         JudgeExecutionData.class).retrieve().bodyToMono(JudgeResponse.SubmissionToken.class);
         return token.flatMap(submissionToken -> {
             try {
-                Thread.sleep(1000 * 2);
+                Thread.sleep(1000 * 5);
             } catch (InterruptedException e) {
                 return Mono.error(new RuntimeException(e));
             }
             return this.webClient.get().uri(uriBuilder -> uriBuilder.path("/submissions" +
-                    "/{token}").queryParam("base64_encoded", true).build(submissionToken.token())).retrieve().bodyToMono(JudgeResponse.Submission.class);
+                    "/{token}").queryParam("base64_encoded", false).build(submissionToken.token())).retrieve().bodyToMono(JudgeResponse.Submission.class);
         });
     }
 

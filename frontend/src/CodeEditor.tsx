@@ -6,21 +6,26 @@ import { editor } from "monaco-editor";
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
 const SampleCode: Record<SupportedLanguage, string> = {
-	javascript: `var hello = "Hello world!";
+	javascript: `var hello = "Hello, JavaScript!";
 console.log(hello);`,
 	java: `public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        System.out.println("Hello, Java!");
     }
 }`,
-	python: `print("Hello world!");`,
+	python: `print("Hello, Python!");`,
 	kotlin: `fun main(args : Array<String>) {
-    println("Hello world!")
+    println("Hello, Kotlin!")
 }`,
-	typescript: `const hello : string = "Hello world!";
+	typescript: `const hello : string = "Hello, TypeScript!";
 console.log(hello);`,
     dart: `void main() {
-  print('Hello, World!');
+  print('Hello, Dart!');
+}`,
+    cpp: `#include <iostream>
+int main() {
+    std::cout << "Hello, C++";
+    return 0;
 }`
 };
 

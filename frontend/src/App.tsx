@@ -12,7 +12,6 @@ import {
 	MenuItemOption,
 	MenuList,
 	MenuOptionGroup,
-	Text,
 	Textarea,
 	useColorMode,
 	useToast,
@@ -44,6 +43,10 @@ function App() {
 		setSelectedExecutor(executor);
 	};
 
+    const [executionOutput, setExecutionOutput] = useState<string>("");
+
+
+
     const executeCode = () => {
         fetch("http://localhost:8080/api/execute", {
             method: "POST",
@@ -53,8 +56,9 @@ function App() {
                 "sourceCode": editorRef.current?.getValue(),
                 "executor": selectedExecutor.toUpperCase()
             })
-        }).then((response) => response.json().then(data => console.log(data))).catch(e => {
-                console.log(e);
+        }).then((response) => response.json().then(data => setExecutionOutput(data.output))).catch(e => {
+                console.error(e);
+                setExecutionOutput("Error executing code. Try again.");
             }
         )
     };
@@ -139,6 +143,12 @@ function App() {
                                                     >
                                                         Dart
                                                     </MenuItemOption>
+                                                    <MenuItemOption
+                                                        onClick={() => handleLanguageChange("cpp")}
+                                                        value={"cpp"}
+                                                    >
+                                                        C++
+                                                    </MenuItemOption>
 												</MenuOptionGroup>
 											</MenuList>
 										</Menu>
@@ -160,7 +170,19 @@ function App() {
 											>
 												Copy code to clipboard
 											</Button>
-											<Button rightIcon={<BsFillPlayFill />} onClick={executeCode}>
+											<Button
+                                                rightIcon={<BsFillPlayFill />}
+                                                onClick={() => {
+                                                    toast({
+                                                        title: "Executing....",
+                                                        status: "success",
+                                                        position: "top",
+                                                        duration: 1000,
+                                                        isClosable: true,
+                                                    });
+                                                    executeCode();
+                                                }}
+                                            >
 												Run
 											</Button>
 										</HStack>
@@ -194,7 +216,7 @@ function App() {
 					</VStack>
 				</Box>
 			</GridItem>
-			<GridItem paddingTop={"250px"} width={"75%"}>
+			<GridItem paddingTop={"100px"} width={"100%"}>
 				<Box paddingTop={"20px"}>
 					<Card variant={"elevated"}>
 						<CardBody>
@@ -225,12 +247,13 @@ function App() {
 								<Box>
 									<Textarea
 										placeholder={"Result"}
-										size={"lg"}
-										height={"200px"}
+                                        value={executionOutput}
+                                        onChange={(e) => setExecutionOutput(e.target.value)}
+										width={"350px"}
+										height={"350px"}
+                                        readOnly
+                                        fontFamily={"monospace"}
 									/>
-								</Box>
-								<Box width={"100%"}>
-									<Text>Execution Time:</Text>
 								</Box>
 							</VStack>
 						</CardBody>

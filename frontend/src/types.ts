@@ -4,4 +4,5 @@ export type SupportedLanguage =
 	| "python"
 	| "kotlin"
 	| "typescript"
-    | "dart";
+    | "dart"
+    | "cpp";

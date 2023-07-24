@@ -6,7 +6,8 @@ public enum SupportedLanguage {
     JAVA("java"),
     KOTLIN("kotlin"),
     TYPESCRIPT("typescript"),
-    DART("dart");
+    DART("dart"),
+    CPP("c++");
     private final String value;
 
     SupportedLanguage(String value) {
