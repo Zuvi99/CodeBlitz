@@ -19,14 +19,14 @@ console.log(hello);`,
 }`,
 	typescript: `const hello : string = "Hello, TypeScript!";
 console.log(hello);`,
-    dart: `void main() {
+	dart: `void main() {
   print('Hello, Dart!');
 }`,
-    cpp: `#include <iostream>
+	cpp: `#include <iostream>
 int main() {
     std::cout << "Hello, C++";
     return 0;
-}`
+}`,
 };
 
 type CodeEditorProps = {

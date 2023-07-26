@@ -26,7 +26,6 @@ import { SupportedLanguage } from "./types.ts";
 import CodeEditor from "./CodeEditor.tsx";
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
-
 function App() {
 	const { colorMode, toggleColorMode } = useColorMode();
 
@@ -43,27 +42,30 @@ function App() {
 		setSelectedExecutor(executor);
 	};
 
-    const [executionOutput, setExecutionOutput] = useState<string>("");
+	const [executionOutput, setExecutionOutput] = useState<string>("");
 
-    const clearTextArea = () => {
-        setExecutionOutput("");
-    }
+	const clearTextArea = () => {
+		setExecutionOutput("");
+	};
 
-    const executeCode = () => {
-        fetch("http://localhost:8080/api/execute", {
-            method: "POST",
-            headers: {"Content-type": "application/json"},
-            body: JSON.stringify({
-                "language": selectedLanguage.toUpperCase(),
-                "sourceCode": editorRef.current?.getValue(),
-                "executor": selectedExecutor.toUpperCase()
-            })
-        }).then((response) => response.json().then(data => setExecutionOutput(data.output))).catch(e => {
-                console.error(e);
-                setExecutionOutput("Error executing code. Try again.");
-            }
-        )
-    };
+	const executeCode = () => {
+		fetch("http://localhost:8080/api/execute", {
+			method: "POST",
+			headers: { "Content-type": "application/json" },
+			body: JSON.stringify({
+				language: selectedLanguage.toUpperCase(),
+				sourceCode: editorRef.current?.getValue(),
+				executor: selectedExecutor.toUpperCase(),
+			}),
+		})
+			.then((response) =>
+				response.json().then((data) => setExecutionOutput(data.output)),
+			)
+			.catch((e) => {
+				console.error(e);
+				setExecutionOutput("Error executing code. Try again.");
+			});
+	};
 
 	const editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null> =
 		useRef<IStandaloneCodeEditor | null>(null);
@@ -105,73 +107,71 @@ function App() {
 												Language: {selectedLanguage}
 											</MenuButton>
 											<MenuList>
-												<MenuOptionGroup
-													type={"radio"}
-												>
+												<MenuOptionGroup type={"radio"}>
 													<MenuItemOption
 														id={"1"}
 														onClick={() => {
-                                                            handleLanguageChange("java");
-                                                            clearTextArea();
-                                                        }}
+															handleLanguageChange("java");
+															clearTextArea();
+														}}
 														value={"java"}
 													>
 														Java
 													</MenuItemOption>
 													<MenuItemOption
 														onClick={() => {
-                                                            handleLanguageChange("python");
-                                                            clearTextArea();
-                                                        }}
+															handleLanguageChange("python");
+															clearTextArea();
+														}}
 														value={"python"}
 													>
 														Python
 													</MenuItemOption>
 													<MenuItemOption
 														onClick={() => {
-                                                            handleLanguageChange("javascript");
-                                                            clearTextArea();
-                                                        }}
+															handleLanguageChange("javascript");
+															clearTextArea();
+														}}
 														value={"javascript"}
 													>
 														JavaScript
 													</MenuItemOption>
 													<MenuItemOption
 														onClick={() => {
-                                                            handleLanguageChange("kotlin");
-                                                            clearTextArea();
-                                                        }}
+															handleLanguageChange("kotlin");
+															clearTextArea();
+														}}
 														value={"kotlin"}
 													>
 														Kotlin
 													</MenuItemOption>
 													<MenuItemOption
 														onClick={() => {
-                                                            handleLanguageChange("typescript")
-                                                            clearTextArea();
-                                                        }}
+															handleLanguageChange("typescript");
+															clearTextArea();
+														}}
 														value={"typescript"}
 													>
 														TypeScript
 													</MenuItemOption>
-                                                    <MenuItemOption
-                                                        onClick={() => {
-                                                            handleLanguageChange("dart");
-                                                            clearTextArea();
-                                                        }}
-                                                        value={"dart"}
-                                                    >
-                                                        Dart
-                                                    </MenuItemOption>
-                                                    <MenuItemOption
-                                                        onClick={() => {
-                                                            handleLanguageChange("cpp");
-                                                            clearTextArea();
-                                                        }}
-                                                        value={"cpp"}
-                                                    >
-                                                        C++
-                                                    </MenuItemOption>
+													<MenuItemOption
+														onClick={() => {
+															handleLanguageChange("dart");
+															clearTextArea();
+														}}
+														value={"dart"}
+													>
+														Dart
+													</MenuItemOption>
+													<MenuItemOption
+														onClick={() => {
+															handleLanguageChange("cpp");
+															clearTextArea();
+														}}
+														value={"cpp"}
+													>
+														C++
+													</MenuItemOption>
 												</MenuOptionGroup>
 											</MenuList>
 										</Menu>
@@ -194,18 +194,18 @@ function App() {
 												Copy code to clipboard
 											</Button>
 											<Button
-                                                rightIcon={<BsFillPlayFill />}
-                                                onClick={() => {
-                                                    toast({
-                                                        title: "Executing....",
-                                                        status: "info",
-                                                        position: "top",
-                                                        duration: 1000,
-                                                        isClosable: true,
-                                                    });
-                                                    executeCode();
-                                                }}
-                                            >
+												rightIcon={<BsFillPlayFill />}
+												onClick={() => {
+													toast({
+														title: "Executing....",
+														status: "info",
+														position: "top",
+														duration: 1000,
+														isClosable: true,
+													});
+													executeCode();
+												}}
+											>
 												Run
 											</Button>
 										</HStack>
@@ -252,13 +252,19 @@ function App() {
 										<MenuList>
 											<MenuOptionGroup type={"radio"}>
 												<MenuItemOption
-													onClick={() => handleExecutorChange("Judge0")}
+													onClick={() => {
+														handleExecutorChange("Judge0");
+														clearTextArea();
+													}}
 													value={"Judge0"}
 												>
 													Judge0
 												</MenuItemOption>
 												<MenuItemOption
-													onClick={() => handleExecutorChange("Piston")}
+													onClick={() => {
+														handleExecutorChange("Piston");
+														clearTextArea();
+													}}
 													value={"Piston"}
 												>
 													Piston
@@ -267,15 +273,15 @@ function App() {
 										</MenuList>
 									</Menu>
 								</Box>
-								<Box>
+								<Box w={"100%"}>
 									<Textarea
-										placeholder={"Result"}
-                                        value={executionOutput}
-                                        onChange={(e) => setExecutionOutput(e.target.value)}
-										width={"350px"}
+										placeholder={"Nothing"}
+										value={executionOutput}
+										onChange={(e) => setExecutionOutput(e.target.value)}
+										width={"100%"}
 										height={"350px"}
-                                        readOnly
-                                        fontFamily={"monospace"}
+										readOnly
+										fontFamily={"monospace"}
 									/>
 								</Box>
 							</VStack>
