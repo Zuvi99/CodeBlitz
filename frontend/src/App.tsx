@@ -96,7 +96,7 @@ function App() {
             <Grid
                 templateColumns="repeat(4, 1fr)"
                 gap={4}
-                minWidth={"1000px"}
+                minWidth={"1050px"}
                 margin={"35px"}
             >
                 <GridItem colSpan={3}>
@@ -250,7 +250,7 @@ function App() {
                         </VStack>
                     </Box>
                 </GridItem>
-                <GridItem width={"100%"}>
+                <GridItem width={"450px"}>
                     <Box w={"100%"} paddingLeft={'300px'} paddingBottom={'150px'}>
                         <Button size={"md"} onClick={toggleColorMode}>
                             {colorMode === "light" ? "Dark" : "Light"} Mode
