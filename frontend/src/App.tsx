@@ -48,7 +48,12 @@ function App() {
 		setExecutionOutput("");
 	};
 
-	const executeCode = () => {
+    const stdInRef = useRef<HTMLTextAreaElement>(null);
+
+    const commandLineArgRef = useRef<HTMLTextAreaElement>(null);
+
+
+    const executeCode = () => {
 		fetch("http://localhost:8080/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
@@ -56,6 +61,8 @@ function App() {
 				language: selectedLanguage.toUpperCase(),
 				sourceCode: editorRef.current?.getValue(),
 				executor: selectedExecutor.toUpperCase(),
+                standardInput: stdInRef.current?.value,
+                commandLineArguments: commandLineArgRef.current?.value.split(/\r?\n/)
 			}),
 		})
 			.then((response) =>
@@ -66,6 +73,8 @@ function App() {
 				setExecutionOutput("Error executing code. Try again.");
 			});
 	};
+
+
 
 	const editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null> =
 		useRef<IStandaloneCodeEditor | null>(null);
@@ -220,10 +229,15 @@ function App() {
 							<CardBody>
 								<HStack gap={25}>
 									<Box>
-										<Textarea w={"200px"} placeholder={"Standard Input"} />
+										<Textarea
+                                            ref={stdInRef}
+                                            w={"200px"}
+                                            placeholder={"Standard Input"}
+                                        />
 									</Box>
 									<Box>
 										<Textarea
+                                            ref={commandLineArgRef}
 											w={"200px"}
 											placeholder={"Command Line Arguments"}
 										/>

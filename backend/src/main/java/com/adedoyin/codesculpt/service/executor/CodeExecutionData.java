@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public record CodeExecutionData(SupportedLanguage language, String sourceCode, CodeExecutor executor,
-                                Optional<String> commandLineArguments, Optional<String> standardInput,
+                                String[] commandLineArguments, String standardInput,
                                 boolean isSelfHosted) {
     public PistonExecutionData toPiston() {
         return new PistonExecutionData(getPistonLanguage(), getPistonVersion(),
-                List.of(new PistonExecutionData.File(Optional.of(""), sourceCode)));
+                List.of(new PistonExecutionData.File(Optional.of(""), sourceCode)), standardInput, commandLineArguments);
     }
 
     public String getPistonLanguage() {
