@@ -289,7 +289,7 @@ function App() {
 								</Box>
 								<Box w={"100%"}>
 									<Textarea
-										placeholder={"Nothing"}
+										placeholder={"Result"}
 										value={executionOutput}
 										onChange={(e) => setExecutionOutput(e.target.value)}
 										width={"100%"}
