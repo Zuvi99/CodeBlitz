@@ -23,8 +23,6 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
             apiLang = "javascript";
         } else if (this.language == SupportedLanguage.JAVA) {
             apiLang = "java";
-        } else if (this.language == SupportedLanguage.KOTLIN) {
-            apiLang = "kotlin";
         } else if (this.language == SupportedLanguage.TYPESCRIPT) {
             apiLang = "typescript";
         } else if (this.language == SupportedLanguage.DART) {
@@ -42,8 +40,6 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
             langVersion = "18.15.0";
         } else if (this.language == SupportedLanguage.JAVA) {
             langVersion = "15.0.2";
-        } else if (this.language == SupportedLanguage.KOTLIN) {
-            langVersion = "1.8.20";
         } else if (this.language == SupportedLanguage.TYPESCRIPT) {
             langVersion = "5.0.3";
         } else if (this.language == SupportedLanguage.DART) {
@@ -67,8 +63,6 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
             langId = 93;
         } else if (this.language == SupportedLanguage.JAVA) {
             langId = 91;
-        } else if (this.language == SupportedLanguage.KOTLIN) {
-            langId = 78;
         } else if (this.language == SupportedLanguage.TYPESCRIPT) {
             langId = 94;
         } else if (this.language == SupportedLanguage.DART) {

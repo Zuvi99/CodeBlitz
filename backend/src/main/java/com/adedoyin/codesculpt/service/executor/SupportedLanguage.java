@@ -4,7 +4,6 @@ public enum SupportedLanguage {
     PYTHON,
     JAVASCRIPT,
     JAVA,
-    KOTLIN,
     TYPESCRIPT,
     DART,
     CPP

@@ -14,9 +14,6 @@ console.log(hello);`,
     }
 }`,
 	python: `print("Hello, Python!");`,
-	kotlin: `fun main(args : Array<String>) {
-    println("Hello, Kotlin!")
-}`,
 	typescript: `const hello : string = "Hello, TypeScript!";
 console.log(hello);`,
 	dart: `void main() {

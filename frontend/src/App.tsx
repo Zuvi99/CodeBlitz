@@ -55,7 +55,7 @@ function App() {
 
 
     const executeCode = () => {
-		fetch("http://localhost:8080/api/execute", {
+		fetch("https://code-sculpt-backend-code-sculpt-spring.azuremicroservices.io/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
@@ -149,15 +149,6 @@ function App() {
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
-                                                                handleLanguageChange("kotlin");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"kotlin"}
-                                                        >
-                                                            Kotlin
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
                                                                 handleLanguageChange("typescript");
                                                                 clearTextArea();
                                                             }}
@@ -215,6 +206,7 @@ function App() {
                                                             isClosable: true,
                                                         });
                                                         executeCode();
+                                                        clearTextArea();
                                                     }}
                                                 >
                                                     Run
@@ -309,8 +301,8 @@ function App() {
             <Box as={'footer'} textAlign={'center'}>
                 <Text>
                     Developed by{" "}
-                    <Link href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"} color={'teal.500'} isExternal>
-                         Adedoyin Adepetun
+                    <Link href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"} color={"blue"} isExternal>
+                        Adedoyin Adepetun
                     </Link>
                 </Text>
             </Box>
