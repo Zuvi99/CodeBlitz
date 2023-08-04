@@ -299,7 +299,7 @@ function App() {
                 </GridItem>
             </Grid>
             <Box as={'footer'} textAlign={'center'}>
-                <Text>
+                <Text fontWeight={"bold"}>
                     Developed by{" "}
                     <Link href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"} color={"blue"} isExternal>
                         Adedoyin Adepetun
