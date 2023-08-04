@@ -6,5 +6,7 @@ public enum SupportedLanguage {
     JAVA,
     TYPESCRIPT,
     DART,
-    CPP
+    CPP,
+    RUBY,
+    GO
 }

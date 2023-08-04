@@ -16,12 +16,10 @@ console.log(hello);`,
 	python: `print("Hello, Python!");`,
 	typescript: `const hello : string = "Hello, TypeScript!";
 console.log(hello);`,
-	dart: `void main() {
-  print('Hello, Dart!');
-}`,
+    ruby: `puts 'Hello, Ruby!'`,
 	cpp: `#include <iostream>
 int main() {
-    std::cout << "Hello, C++";
+    std::cout << "Hello, C++!";
     return 0;
 }`,
 };

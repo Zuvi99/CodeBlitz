@@ -55,7 +55,7 @@ function App() {
 
 
     const executeCode = () => {
-		fetch("https://code-sculpt-backend-code-sculpt-spring.azuremicroservices.io/api/execute", {
+		fetch("http://localhost:8080/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
@@ -158,12 +158,12 @@ function App() {
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
-                                                                handleLanguageChange("dart");
+                                                                handleLanguageChange("ruby");
                                                                 clearTextArea();
                                                             }}
-                                                            value={"dart"}
+                                                            value={"ruby"}
                                                         >
-                                                            Dart
+                                                            Ruby
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {

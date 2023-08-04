@@ -25,10 +25,10 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
             apiLang = "java";
         } else if (this.language == SupportedLanguage.TYPESCRIPT) {
             apiLang = "typescript";
-        } else if (this.language == SupportedLanguage.DART) {
-            apiLang = "dart";
         } else if (this.language == SupportedLanguage.CPP) {
             apiLang = "c++";
+        } else if (this.language == SupportedLanguage.RUBY) {
+            apiLang = "ruby";
         }
         return apiLang;
     }
@@ -42,17 +42,16 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
             langVersion = "15.0.2";
         } else if (this.language == SupportedLanguage.TYPESCRIPT) {
             langVersion = "5.0.3";
-        } else if (this.language == SupportedLanguage.DART) {
-            langVersion = "2.19.6";
         } else if (this.language == SupportedLanguage.CPP) {
             langVersion = "10.2.0";
+        } else if (this.language == SupportedLanguage.RUBY) {
+            langVersion = "3.0.1";
         }
         return langVersion;
     }
 
     public JudgeExecutionData toJudge() {
-        String encodedSourceCode = Base64.getEncoder().encodeToString(sourceCode.getBytes());
-        return new JudgeExecutionData(encodedSourceCode, getJudgeLangId());
+        return new JudgeExecutionData(sourceCode, getJudgeLangId());
     }
 
     public int getJudgeLangId() {
@@ -62,13 +61,13 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
         } else if (this.language == SupportedLanguage.JAVASCRIPT) {
             langId = 93;
         } else if (this.language == SupportedLanguage.JAVA) {
-            langId = 91;
+            langId = 62;
         } else if (this.language == SupportedLanguage.TYPESCRIPT) {
             langId = 94;
-        } else if (this.language == SupportedLanguage.DART) {
-            langId = 90;
         } else if (this.language == SupportedLanguage.CPP) {
             langId = 54;
+        } else if (this.language == SupportedLanguage.RUBY) {
+            langId = 72;
         }
         return langId;
     }

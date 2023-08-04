@@ -4,14 +4,14 @@ import com.adedoyin.codesculpt.service.executor.CodeExecutionResponse;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-public class JudgeResponse {
-    public static record SubmissionToken(String token) {
-    }
+import java.util.Base64;
 
+public record JudgeResponse(String stdout, int statusId, int languageId, String stderr, Status status) {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static record Submission(String stdout, int statusId, int languageId, String stderr) {
-        public CodeExecutionResponse toResponse() {
-            return new CodeExecutionResponse(stdout);
-        }
+    public static record Status(int id, String description) {
+    }
+    public CodeExecutionResponse toResponse() {
+        return new CodeExecutionResponse(stdout);
     }
 }
+

@@ -3,5 +3,5 @@ export type SupportedLanguage =
 	| "java"
 	| "python"
 	| "typescript"
-	| "dart"
+    | "ruby"
 	| "cpp";

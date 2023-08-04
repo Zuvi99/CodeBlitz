@@ -26,7 +26,7 @@ public class CodesculptConfig {
         // config.applyPermitDefaultValues()
 
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("https://code-sculpt.vercel.app");
+        config.addAllowedOrigin("http://localhost:5173/");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
