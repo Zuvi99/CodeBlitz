@@ -49,9 +49,13 @@ function App() {
 		setExecutionOutput("");
 	};
 
-    const stdInRef = useRef<HTMLTextAreaElement>(null);
+    const pistonStdIn = useRef<HTMLTextAreaElement>(null);
 
-    const commandLineArgRef = useRef<HTMLTextAreaElement>(null);
+    const pistonCommandLineRef = useRef<HTMLTextAreaElement>(null);
+
+    const judgeStdIn = useRef<HTMLTextAreaElement>(null);
+
+    const judgeCommandLineRef = useRef<HTMLTextAreaElement>(null);
 
 
     const executeCode = () => {
@@ -62,8 +66,8 @@ function App() {
 				language: selectedLanguage.toUpperCase(),
 				sourceCode: editorRef.current?.getValue(),
 				executor: selectedExecutor.toUpperCase(),
-                standardInput: stdInRef.current?.value,
-                commandLineArguments: commandLineArgRef.current?.value.split(/\r?\n/)
+                standardInput: pistonStdIn.current?.value,
+                commandLineArguments: pistonCommandLineRef.current?.value.split(/\r?\n/)
 			}),
 		})
 			.then((response) =>
@@ -224,16 +228,30 @@ function App() {
                                     <HStack gap={25}>
                                         <Box>
                                             <Textarea
-                                                ref={stdInRef}
+                                                ref={pistonStdIn}
                                                 w={"200px"}
-                                                placeholder={"Standard Input"}
+                                                placeholder={"Standard Input (Piston)"}
                                             />
                                         </Box>
                                         <Box>
                                             <Textarea
-                                                ref={commandLineArgRef}
+                                                ref={pistonCommandLineRef}
                                                 w={"200px"}
-                                                placeholder={"Command Line Arguments"}
+                                                placeholder={"CMD Args (Piston)"}
+                                            />
+                                        </Box>
+                                        <Box>
+                                            <Textarea
+                                                ref={judgeStdIn}
+                                                w={"200px"}
+                                                placeholder={"Standard Input (Judge0)"}
+                                            />
+                                        </Box>
+                                        <Box>
+                                            <Textarea
+                                                ref={judgeCommandLineRef}
+                                                w={"200px"}
+                                                placeholder={"CMD Args (Judge0)"}
                                             />
                                         </Box>
                                     </HStack>

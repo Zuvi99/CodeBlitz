@@ -59,11 +59,11 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
         if (this.language == SupportedLanguage.PYTHON) {
             langId = 71;
         } else if (this.language == SupportedLanguage.JAVASCRIPT) {
-            langId = 93;
+            langId = 63;
         } else if (this.language == SupportedLanguage.JAVA) {
             langId = 62;
         } else if (this.language == SupportedLanguage.TYPESCRIPT) {
-            langId = 94;
+            langId = 74;
         } else if (this.language == SupportedLanguage.CPP) {
             langId = 54;
         } else if (this.language == SupportedLanguage.RUBY) {
