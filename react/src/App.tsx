@@ -59,15 +59,17 @@ function App() {
 
 
     const executeCode = () => {
-		fetch("http://localhost:8080/api/execute", {
+		fetch("https://code-sculpt-backend-code-sculpt-spring.azuremicroservices.io/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
 				language: selectedLanguage.toUpperCase(),
 				sourceCode: editorRef.current?.getValue(),
 				executor: selectedExecutor.toUpperCase(),
-                standardInput: pistonStdIn.current?.value,
-                commandLineArguments: pistonCommandLineRef.current?.value.split(/\r?\n/)
+                pistonStandardInput: pistonStdIn.current?.value,
+                pistonCommandLineArguments: pistonCommandLineRef.current?.value.split(/\r?\n/),
+                judgeStandardInput: judgeStdIn.current?.value,
+                judgeCommandLineArguments: judgeCommandLineRef.current?.value
 			}),
 		})
 			.then((response) =>

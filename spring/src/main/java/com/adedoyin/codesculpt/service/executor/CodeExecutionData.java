@@ -3,16 +3,15 @@ package com.adedoyin.codesculpt.service.executor;
 import com.adedoyin.codesculpt.service.executor.judge0.JudgeExecutionData;
 import com.adedoyin.codesculpt.service.executor.piston.PistonExecutionData;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 public record CodeExecutionData(SupportedLanguage language, String sourceCode, CodeExecutor executor,
-                                String[] commandLineArguments, String standardInput,
-                                boolean isSelfHosted) {
+                                String[] pistonCommandLineArguments, String pistonStandardInput,
+                                String judgeCommandLineArguments, String judgeStandardInput) {
     public PistonExecutionData toPiston() {
         return new PistonExecutionData(getPistonLanguage(), getPistonVersion(),
-                List.of(new PistonExecutionData.File(Optional.of(""), sourceCode)), standardInput, commandLineArguments);
+                List.of(new PistonExecutionData.File(Optional.of(""), sourceCode)), pistonStandardInput, pistonCommandLineArguments);
     }
 
     public String getPistonLanguage() {
@@ -51,7 +50,7 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
     }
 
     public JudgeExecutionData toJudge() {
-        return new JudgeExecutionData(sourceCode, getJudgeLangId());
+        return new JudgeExecutionData(sourceCode, getJudgeLangId(), judgeStandardInput, judgeCommandLineArguments);
     }
 
     public int getJudgeLangId() {
