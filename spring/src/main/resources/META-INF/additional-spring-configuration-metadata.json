@@ -1,9 +1,8 @@
 {
   "properties": [
     {
-      "name": "code.sculpt.api",
+      "name": "judge.server.url",
       "type": "java.lang.String",
-      "description": "Description for code.sculpt.api."
-    }
-  ]
-}
+      "description": "Description for judge.server.url."
+  }
+] }

@@ -4,6 +4,7 @@ import com.adedoyin.codesculpt.service.executor.ExecutionService;
 import com.adedoyin.codesculpt.service.executor.ExecutionServiceImpl;
 import com.adedoyin.codesculpt.service.executor.judge0.JudgeExecutionService;
 import com.adedoyin.codesculpt.service.executor.piston.PistonExecutionService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -12,9 +13,12 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class CodesculptConfig {
+
+    @Value("${judge.server.url}")
+    private String judgeServerUrl;
     @Bean
     public ExecutionService executorService() {
-        return new ExecutionServiceImpl(new PistonExecutionService(), new JudgeExecutionService());
+        return new ExecutionServiceImpl(new PistonExecutionService(), new JudgeExecutionService(this.judgeServerUrl));
     }
 
     @Bean

@@ -1,5 +1,5 @@
 debug: true
-code:
-  sculpt:
-    api: ${CODE_SCULPT_API}
+judge:
+  server:
+    url: ${JUDGE_SERVER_URL}
 

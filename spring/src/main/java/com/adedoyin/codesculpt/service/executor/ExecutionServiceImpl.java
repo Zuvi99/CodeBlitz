@@ -9,9 +9,9 @@ import reactor.core.publisher.Mono;
 
 public class ExecutionServiceImpl implements ExecutionService {
 
-    private PistonExecutionService pistonExecutionService;
+    private final PistonExecutionService pistonExecutionService;
 
-    private JudgeExecutionService judgeExecutionService;
+    private final JudgeExecutionService judgeExecutionService;
 
     public ExecutionServiceImpl(PistonExecutionService pistonExecutionService, JudgeExecutionService judgeExecutionService) {
         this.pistonExecutionService = pistonExecutionService;
