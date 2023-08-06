@@ -8,7 +8,7 @@ public class JudgeExecutionService {
     private final WebClient webClient;
 
     public JudgeExecutionService() {
-        this.webClient = WebClient.builder().baseUrl("http://localhost:2358").build();
+        this.webClient = WebClient.builder().baseUrl("http://0.0.0.0:2358").build();
     }
 
     public Mono<JudgeResponse> execute(JudgeExecutionData data) {
