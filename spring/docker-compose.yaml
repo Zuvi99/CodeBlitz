@@ -24,6 +24,7 @@ services:
     ports:
       - "2358:2358"
     <<: *default-logging
+    privileged: true
     depends_on:
       - judge-db
       - judge-redis
@@ -34,26 +35,28 @@ services:
       - ./judge0.conf:/judge0.conf:ro
     <<: *default-logging
     command: ["./scripts/workers"]
+    privileged: true
     depends_on:
       - judge-db
       - judge-redis
 
   judge-db:
     image: postgres:13.0
-    <<: *default-logging
     env_file: judge0.conf
+    <<: *default-logging
+
 
   judge-redis:
     image: redis:6.0
-    <<: *default-logging
     env_file: judge0.conf
     command: [
       "bash", "-c",
       'docker-entrypoint.sh --appendonly yes --requirepass "$$REDIS_PASSWORD"'
     ]
+    <<: *default-logging
 
 
-#volumes:
-#  postgres-data:
-#  redis-data:
+volumes:
+  postgres-data:
+  redis-data:
 
