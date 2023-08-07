@@ -1,0 +1,5 @@
+runtime: java17
+instance_class: F1
+
+env_variables:
+  JUDGE_SERVER_URL: "http://judge-server:2358"

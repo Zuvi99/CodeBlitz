@@ -59,7 +59,7 @@ function App() {
 
 
     const executeCode = () => {
-		fetch("http://localhost:8080/api/execute", {
+		fetch("https://axial-crane-395116.uc.r.appspot.com/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
