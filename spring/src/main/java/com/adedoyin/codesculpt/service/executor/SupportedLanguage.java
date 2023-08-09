@@ -1,12 +1,17 @@
 package com.adedoyin.codesculpt.service.executor;
 
 public enum SupportedLanguage {
-    PYTHON,
-    JAVASCRIPT,
     JAVA,
+    PYTHON,
     TYPESCRIPT,
-    DART,
-    CPP,
     RUBY,
-    GO
+    CPP,
+    DART,
+    PASCAL,
+    SWIFT,
+    SCALA,
+    C,
+    ELIXIR,
+    PERL,
+    RUST
 }

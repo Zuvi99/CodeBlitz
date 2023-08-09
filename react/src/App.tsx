@@ -33,7 +33,7 @@ function App() {
 	const [selectedLanguage, setSelectedLanguage] =
 		useState<SupportedLanguage>("java");
 
-	const [selectedExecutor, setSelectedExecutor] = useState<string>("Piston");
+	const [selectedExecutor, setSelectedExecutor] = useState<string>("Public");
 
 	const handleLanguageChange = (language: SupportedLanguage) => {
 		setSelectedLanguage(language);
@@ -52,10 +52,6 @@ function App() {
     const pistonStdIn = useRef<HTMLTextAreaElement>(null);
 
     const pistonCommandLineRef = useRef<HTMLTextAreaElement>(null);
-
-    const judgeStdIn = useRef<HTMLTextAreaElement>(null);
-
-    const judgeCommandLineRef = useRef<HTMLTextAreaElement>(null);
 
 
     const executeCode = () => {
@@ -144,15 +140,6 @@ function App() {
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
-                                                                handleLanguageChange("javascript");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"javascript"}
-                                                        >
-                                                            JavaScript
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
                                                                 handleLanguageChange("typescript");
                                                                 clearTextArea();
                                                             }}
@@ -177,6 +164,69 @@ function App() {
                                                             value={"cpp"}
                                                         >
                                                             C++
+                                                        </MenuItemOption>
+                                                        <MenuItemOption
+                                                            onClick={() => {
+                                                                handleLanguageChange("dart");
+                                                                clearTextArea();
+                                                            }}
+                                                            value={"dart"}
+                                                        >
+                                                            Dart
+                                                        </MenuItemOption>
+                                                        <MenuItemOption
+                                                            onClick={() => {
+                                                                handleLanguageChange("pascal");
+                                                                clearTextArea();
+                                                            }}
+                                                            value={"pascal"}
+                                                        >
+                                                            Pascal
+                                                        </MenuItemOption>
+                                                        <MenuItemOption
+                                                            onClick={() => {
+                                                                handleLanguageChange("swift");
+                                                                clearTextArea();
+                                                            }}
+                                                            value={"swift"}
+                                                        >
+                                                            Swift
+                                                        </MenuItemOption>
+                                                        <MenuItemOption
+                                                            onClick={() => {
+                                                                handleLanguageChange("c");
+                                                                clearTextArea();
+                                                            }}
+                                                            value={"c"}
+                                                        >
+                                                            C
+                                                        </MenuItemOption>
+                                                        <MenuItemOption
+                                                            onClick={() => {
+                                                                handleLanguageChange("elixir");
+                                                                clearTextArea();
+                                                            }}
+                                                            value={"elixir"}
+                                                        >
+                                                            Elixir
+                                                        </MenuItemOption>
+                                                        <MenuItemOption
+                                                            onClick={() => {
+                                                                handleLanguageChange("perl");
+                                                                clearTextArea();
+                                                            }}
+                                                            value={"perl"}
+                                                        >
+                                                            Perl
+                                                        </MenuItemOption>
+                                                        <MenuItemOption
+                                                            onClick={() => {
+                                                                handleLanguageChange("rust");
+                                                                clearTextArea();
+                                                            }}
+                                                            value={"rust"}
+                                                        >
+                                                            Rust
                                                         </MenuItemOption>
                                                     </MenuOptionGroup>
                                                 </MenuList>
@@ -230,28 +280,14 @@ function App() {
                                             <Textarea
                                                 ref={pistonStdIn}
                                                 w={"200px"}
-                                                placeholder={"Standard Input (Piston)"}
+                                                placeholder={"Standard Input"}
                                             />
                                         </Box>
                                         <Box>
                                             <Textarea
                                                 ref={pistonCommandLineRef}
                                                 w={"200px"}
-                                                placeholder={"CMD Args (Piston)"}
-                                            />
-                                        </Box>
-                                        <Box>
-                                            <Textarea
-                                                ref={judgeStdIn}
-                                                w={"200px"}
-                                                placeholder={"Standard Input (Judge0)"}
-                                            />
-                                        </Box>
-                                        <Box>
-                                            <Textarea
-                                                ref={judgeCommandLineRef}
-                                                w={"200px"}
-                                                placeholder={"CMD Args (Judge0)"}
+                                                placeholder={"CMD Args"}
                                             />
                                         </Box>
                                     </HStack>
@@ -279,21 +315,21 @@ function App() {
                                                 <MenuOptionGroup type={"radio"}>
                                                     <MenuItemOption
                                                         onClick={() => {
-                                                            handleExecutorChange("Judge0");
+                                                            handleExecutorChange("Public");
                                                             clearTextArea();
                                                         }}
-                                                        value={"Judge0"}
+                                                        value={"Public"}
                                                     >
-                                                        Judge0
+                                                        Public
                                                     </MenuItemOption>
                                                     <MenuItemOption
                                                         onClick={() => {
-                                                            handleExecutorChange("Piston");
+                                                            handleExecutorChange("SelfHosted");
                                                             clearTextArea();
                                                         }}
-                                                        value={"Piston"}
+                                                        value={"SelfHosted"}
                                                     >
-                                                        Piston
+                                                        SelfHosted
                                                     </MenuItemOption>
                                                 </MenuOptionGroup>
                                             </MenuList>

@@ -1,7 +1,13 @@
 export type SupportedLanguage =
-	| "javascript"
 	| "java"
+    | "dart"
+    | "pascal"
+    | "swift"
 	| "python"
 	| "typescript"
     | "ruby"
-	| "cpp";
+	| "cpp"
+    | "c"
+    | "elixir"
+    | "perl"
+    | "rust"

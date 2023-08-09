@@ -1,7 +1,5 @@
 package com.adedoyin.codesculpt.service.executor.piston_self_host;
 
-import com.adedoyin.codesculpt.service.executor.piston.PistonExecutionData;
-import com.adedoyin.codesculpt.service.executor.piston.PistonResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -9,8 +7,8 @@ public class SelfHostExecutionService {
 
     private final WebClient webClient;
 
-    public SelfHostExecutionService(String pistonServerUrl) {
-        this.webClient = WebClient.builder().baseUrl(pistonServerUrl).build();
+    public SelfHostExecutionService() {
+        this.webClient = WebClient.builder().baseUrl("https://piston-api-vizuwgtgsa-uc.a.run.app/api/v2").build();
     }
 
     public Mono<SelfHostResponse> execute(SelfHostExecutionData data) {

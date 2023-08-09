@@ -6,8 +6,6 @@ import { editor } from "monaco-editor";
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
 const SampleCode: Record<SupportedLanguage, string> = {
-	javascript: `var hello = "Hello, JavaScript!";
-console.log(hello);`,
 	java: `public class Main {
     public static void main(String[] args) {
         System.out.println("Hello, Java!");
@@ -21,6 +19,34 @@ console.log(hello);`,
 int main() {
     std::cout << "Hello, C++!";
     return 0;
+}`,
+    dart: `void main() {
+    print('Hello, Dart!');
+}`,
+    pascal: `program Hello;
+begin
+  writeln ('Hello, Pascal!');
+end.`,
+    swift: `print("Hello, Swift!")`,
+    c: `#include <stdio.h>
+int main() {
+   // printf() displays the string inside quotation
+   printf("Hello, World!");
+   return 0;
+}
+`,
+    elixir: `IO.puts("Hello, World!")`,
+    perl: `# Modules used
+use strict;
+use warnings;
+  
+# Print function 
+print("Hello World\\n");`,
+    rust: `fn main() {
+    // Statements here are executed when the compiled binary is called.
+
+    // Print text to the console.
+    println!("Hello, Rust!");
 }`,
 };
 

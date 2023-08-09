@@ -14,38 +14,90 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
     }
 
     public String getPistonLanguage() {
-        String apiLang = "";
-        if (this.language == SupportedLanguage.PYTHON) {
-            apiLang = "python";
-        } else if (this.language == SupportedLanguage.JAVASCRIPT) {
-            apiLang = "javascript";
-        } else if (this.language == SupportedLanguage.JAVA) {
-            apiLang = "java";
-        } else if (this.language == SupportedLanguage.TYPESCRIPT) {
-            apiLang = "typescript";
-        } else if (this.language == SupportedLanguage.CPP) {
-            apiLang = "c++";
-        } else if (this.language == SupportedLanguage.RUBY) {
-            apiLang = "ruby";
+        switch (language) {
+            case JAVA -> {
+                return "java";
+            }
+            case PYTHON -> {
+                return "python";
+            }
+            case TYPESCRIPT -> {
+                return "typescript";
+            }
+            case RUBY -> {
+                return "ruby";
+            }
+            case CPP -> {
+                return "cpp";
+            }
+            case DART -> {
+                return "dart";
+            }
+            case PASCAL -> {
+                return "pascal";
+            }
+            case SWIFT -> {
+                return "swift";
+            }
+            case SCALA -> {
+                return "scala";
+            }
+            case C -> {
+                return "c";
+            }
+            case ELIXIR -> {
+                return "elixir";
+            }
+            case PERL -> {
+                return "perl";
+            }
+            case RUST -> {
+                return  "rust";
+            }
+            default -> {
+                return "";
+            }
         }
-        return apiLang;
     }
     public  String getPistonVersion() {
-        String langVersion = "";
-        if (this.language == SupportedLanguage.PYTHON) {
-            langVersion = "3.10.0";
-        } else if (this.language == SupportedLanguage.JAVASCRIPT) {
-            langVersion = "18.15.0";
-        } else if (this.language == SupportedLanguage.JAVA) {
-            langVersion = "15.0.2";
-        } else if (this.language == SupportedLanguage.TYPESCRIPT) {
-            langVersion = "5.0.3";
-        } else if (this.language == SupportedLanguage.CPP) {
-            langVersion = "10.2.0";
-        } else if (this.language == SupportedLanguage.RUBY) {
-            langVersion = "3.0.1";
+        switch (language) {
+            case JAVA -> {
+                return "15.0.2";
+            }
+            case PYTHON -> {
+                return "3.10.0";
+            }
+            case TYPESCRIPT -> {
+                return "5.0.3";
+            }
+            case RUBY -> {
+                return "3.0.1";
+            }
+            case CPP, C -> {
+                return "10.2.0";
+            }
+            case DART -> {
+                return "2.19.6";
+            }
+            case PASCAL, SCALA -> {
+                return "3.2.2";
+            }
+            case SWIFT -> {
+                return "5.3.3";
+            }
+            case ELIXIR -> {
+                return "1.11.3";
+            }
+            case PERL -> {
+                return "5.36.0";
+            }
+            case RUST -> {
+                return  "1.68.2";
+            }
+            default -> {
+                return "";
+            }
         }
-        return langVersion;
     }
 
     public SelfHostExecutionData toPistonServer() {
