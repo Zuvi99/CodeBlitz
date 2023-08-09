@@ -18,6 +18,7 @@ public class CodeExecutorController {
         this.executorService = executorService;
     }
 
+    @CrossOrigin
     @PostMapping("/execute")
     public Mono<CodeExecutionResponse> execute(@RequestBody CodeExecutionData data) {
         System.out.println(data);

@@ -7,53 +7,73 @@ x-logging: &default-logging
       max-size: 100m
 
 services:
-  code-sculpt-api:
-    ports:
-      - "8080:8080"
-    build: .
-    environment:
-      SERVER_PORT: 8080
-      JUDGE_SERVER_URL: http://judge-server:2358
-    depends_on:
-      - judge-server
+#  code-sculpt-api:
+#    ports:
+#      - "8080:8080"
+#    build: .
+#    environment:
+#      SERVER_PORT: 8080
+#      JUDGE_SERVER_URL: https://api.code-pad.me
+#    depends_on:
+#      - judge-server
 
   judge-server:
     image: judge0/judge0:1.13.0
-    volumes:
-      - ./judge0.conf:/judge0.conf:ro
+    environment:
+      POSTGRES_HOST: "0.0.0.0"
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: judge0
+      POSTGRES_DB: judge0
+      POSTGRES_PASSWORD: judge0pass
+#      REDIS_HOST: judge-redis
+#      REDIS_PORT: 6379
+#      REDIS_PASSWORD: judge0redis
     ports:
       - "2358:2358"
     <<: *default-logging
     privileged: true
-    depends_on:
-      - judge-db
-      - judge-redis
+#    depends_on:
+#      - judge-db
+#      - judge-redis
 
-  judge-workers:
-    image: judge0/judge0:1.13.0
-    volumes:
-      - ./judge0.conf:/judge0.conf:ro
-    <<: *default-logging
-    command: ["./scripts/workers"]
-    privileged: true
-    depends_on:
-      - judge-db
-      - judge-redis
-
-  judge-db:
-    image: postgres:13.0
-    env_file: judge0.conf
-    <<: *default-logging
-
-
-  judge-redis:
-    image: redis:6.0
-    env_file: judge0.conf
-    command: [
-      "bash", "-c",
-      'docker-entrypoint.sh --appendonly yes --requirepass "$$REDIS_PASSWORD"'
-    ]
-    <<: *default-logging
+#  judge-workers:
+#    image: judge0/judge0:1.13.0
+#    environment:
+#      POSTGRES_HOST: judge-db
+#      POSTGRES_PORT: 5432
+#      POSTGRES_USER: judge0
+#      POSTGRES_DB: judge0
+#      POSTGRES_PASSWORD: de}A]jyn`lmkn8*y
+#      REDIS_HOST: judge-redis
+#      REDIS_PORT: 6379
+#      REDIS_PASSWORD: judge0redis
+#    <<: *default-logging
+#    command: ["./scripts/workers"]
+#    privileged: true
+#    depends_on:
+#      - judge-db
+#      - judge-redis
+#
+#  judge-db:
+#    image: postgres:13.0
+#    environment:
+#      POSTGRES_PORT: 5432
+#      POSTGRES_USER: judge0
+#      POSTGRES_DB: judge0
+#      POSTGRES_PASSWORD: judge0pass
+#    <<: *default-logging
+#
+#
+#  judge-redis:
+#    image: redis:6.0
+#    environment:
+#      REDIS_PORT: 6379
+#      REDIS_PASSWORD: judge0redis
+#    command: [
+#      "bash", "-c",
+#      'docker-entrypoint.sh --appendonly yes --requirepass "$$REDIS_PASSWORD"'
+#    ]
+#    <<: *default-logging
 
 
 volumes:

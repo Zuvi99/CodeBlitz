@@ -59,7 +59,7 @@ function App() {
 
 
     const executeCode = () => {
-		fetch("https://axial-crane-395116.uc.r.appspot.com/api/execute", {
+		fetch("http://localhost:8080/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
@@ -68,8 +68,6 @@ function App() {
 				executor: selectedExecutor.toUpperCase(),
                 pistonStandardInput: pistonStdIn.current?.value,
                 pistonCommandLineArguments: pistonCommandLineRef.current?.value.split(/\r?\n/),
-                judgeStandardInput: judgeStdIn.current?.value,
-                judgeCommandLineArguments: judgeCommandLineRef.current?.value
 			}),
 		})
 			.then((response) =>

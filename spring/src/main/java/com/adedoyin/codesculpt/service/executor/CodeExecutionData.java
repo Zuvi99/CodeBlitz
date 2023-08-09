@@ -1,14 +1,13 @@
 package com.adedoyin.codesculpt.service.executor;
 
-import com.adedoyin.codesculpt.service.executor.judge0.JudgeExecutionData;
+import com.adedoyin.codesculpt.service.executor.piston_self_host.SelfHostExecutionData;
 import com.adedoyin.codesculpt.service.executor.piston.PistonExecutionData;
 
 import java.util.List;
 import java.util.Optional;
 
 public record CodeExecutionData(SupportedLanguage language, String sourceCode, CodeExecutor executor,
-                                String[] pistonCommandLineArguments, String pistonStandardInput,
-                                String judgeCommandLineArguments, String judgeStandardInput) {
+                                String[] pistonCommandLineArguments, String pistonStandardInput) {
     public PistonExecutionData toPiston() {
         return new PistonExecutionData(getPistonLanguage(), getPistonVersion(),
                 List.of(new PistonExecutionData.File(Optional.of(""), sourceCode)), pistonStandardInput, pistonCommandLineArguments);
@@ -49,25 +48,9 @@ public record CodeExecutionData(SupportedLanguage language, String sourceCode, C
         return langVersion;
     }
 
-    public JudgeExecutionData toJudge() {
-        return new JudgeExecutionData(sourceCode, getJudgeLangId(), judgeStandardInput, judgeCommandLineArguments);
-    }
-
-    public int getJudgeLangId() {
-        int langId = 0;
-        if (this.language == SupportedLanguage.PYTHON) {
-            langId = 71;
-        } else if (this.language == SupportedLanguage.JAVASCRIPT) {
-            langId = 63;
-        } else if (this.language == SupportedLanguage.JAVA) {
-            langId = 62;
-        } else if (this.language == SupportedLanguage.TYPESCRIPT) {
-            langId = 74;
-        } else if (this.language == SupportedLanguage.CPP) {
-            langId = 54;
-        } else if (this.language == SupportedLanguage.RUBY) {
-            langId = 72;
-        }
-        return langId;
+    public SelfHostExecutionData toPistonServer() {
+        return new SelfHostExecutionData(getPistonLanguage(), getPistonVersion(),
+                List.of(new SelfHostExecutionData.File(Optional.of(""), sourceCode)), pistonStandardInput,
+                pistonCommandLineArguments);
     }
 }

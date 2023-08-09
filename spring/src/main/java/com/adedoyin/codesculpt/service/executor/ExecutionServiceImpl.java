@@ -1,21 +1,21 @@
 package com.adedoyin.codesculpt.service.executor;
 
 
-import com.adedoyin.codesculpt.service.executor.judge0.JudgeExecutionService;
-import com.adedoyin.codesculpt.service.executor.judge0.JudgeResponse;
+import com.adedoyin.codesculpt.service.executor.piston_self_host.SelfHostExecutionService;
 import com.adedoyin.codesculpt.service.executor.piston.PistonExecutionService;
 import com.adedoyin.codesculpt.service.executor.piston.PistonResponse;
+import com.adedoyin.codesculpt.service.executor.piston_self_host.SelfHostResponse;
 import reactor.core.publisher.Mono;
 
 public class ExecutionServiceImpl implements ExecutionService {
 
     private final PistonExecutionService pistonExecutionService;
 
-    private final JudgeExecutionService judgeExecutionService;
+    private final SelfHostExecutionService selfHostExecutionService;
 
-    public ExecutionServiceImpl(PistonExecutionService pistonExecutionService, JudgeExecutionService judgeExecutionService) {
+    public ExecutionServiceImpl(PistonExecutionService pistonExecutionService, SelfHostExecutionService selfHostExecutionService) {
         this.pistonExecutionService = pistonExecutionService;
-        this.judgeExecutionService = judgeExecutionService;
+        this.selfHostExecutionService = selfHostExecutionService;
     }
 
 
@@ -24,8 +24,8 @@ public class ExecutionServiceImpl implements ExecutionService {
     @Override
     public Mono<CodeExecutionResponse> executeCode(CodeExecutionData codeExecutionData) {
       return  switch (codeExecutionData.executor()) {
-            case JUDGE0 -> this.judgeExecutionService.execute(codeExecutionData.toJudge()).map(JudgeResponse::toResponse);
-            case PISTON -> this.pistonExecutionService.execute(codeExecutionData.toPiston()).map(PistonResponse::toResponse);
+          case SELFHOSTED -> this.selfHostExecutionService.execute(codeExecutionData.toPistonServer()).map(SelfHostResponse::toResponse);
+          case PUBLIC -> this.pistonExecutionService.execute(codeExecutionData.toPiston()).map(PistonResponse::toResponse);
         };
     }
 }

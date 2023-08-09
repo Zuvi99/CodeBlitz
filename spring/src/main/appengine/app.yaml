@@ -2,4 +2,5 @@ runtime: java17
 instance_class: F1
 
 env_variables:
-  JUDGE_SERVER_URL: "http://judge-server:2358"
+  PISTON_SERVER_URL: "https://piston-api-vizuwgtgsa-uc.a.run.app/api/v2"
+  PISTON_API_URL: "https://emkc.org/api/v2/piston"
