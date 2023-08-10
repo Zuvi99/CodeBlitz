@@ -55,7 +55,7 @@ function App() {
 
 
     const executeCode = () => {
-		fetch("http://localhost:8080/api/execute", {
+		fetch("https://axial-crane-395116.uc.r.appspot.com/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
@@ -127,7 +127,7 @@ function App() {
                                                             }}
                                                             value={"java"}
                                                         >
-                                                            Java
+                                                            Java (15.0.2)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -136,7 +136,7 @@ function App() {
                                                             }}
                                                             value={"python"}
                                                         >
-                                                            Python
+                                                            Python (3.10.0)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -145,7 +145,7 @@ function App() {
                                                             }}
                                                             value={"typescript"}
                                                         >
-                                                            TypeScript
+                                                            TypeScript (5.0.3)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -154,7 +154,7 @@ function App() {
                                                             }}
                                                             value={"ruby"}
                                                         >
-                                                            Ruby
+                                                            Ruby (3.0.1)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -163,7 +163,7 @@ function App() {
                                                             }}
                                                             value={"cpp"}
                                                         >
-                                                            C++
+                                                            C++ (10.2.0)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -172,7 +172,7 @@ function App() {
                                                             }}
                                                             value={"dart"}
                                                         >
-                                                            Dart
+                                                            Dart (2.19.6)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -181,7 +181,7 @@ function App() {
                                                             }}
                                                             value={"pascal"}
                                                         >
-                                                            Pascal
+                                                            Pascal (3.2.2)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -190,7 +190,7 @@ function App() {
                                                             }}
                                                             value={"swift"}
                                                         >
-                                                            Swift
+                                                            Swift (5.3.3)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -199,7 +199,7 @@ function App() {
                                                             }}
                                                             value={"c"}
                                                         >
-                                                            C
+                                                            C (3.2.2)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -208,7 +208,7 @@ function App() {
                                                             }}
                                                             value={"elixir"}
                                                         >
-                                                            Elixir
+                                                            Elixir (1.11.3)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -217,7 +217,7 @@ function App() {
                                                             }}
                                                             value={"perl"}
                                                         >
-                                                            Perl
+                                                            Perl (5.36.0)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -226,7 +226,7 @@ function App() {
                                                             }}
                                                             value={"rust"}
                                                         >
-                                                            Rust
+                                                            Rust (1.68.2)
                                                         </MenuItemOption>
                                                     </MenuOptionGroup>
                                                 </MenuList>
