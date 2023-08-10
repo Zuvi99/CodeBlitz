@@ -1,5 +1,4 @@
 debug: false
-judge:
-  server:
-    url: ${JUDGE_SERVER_URL}
+
+
 

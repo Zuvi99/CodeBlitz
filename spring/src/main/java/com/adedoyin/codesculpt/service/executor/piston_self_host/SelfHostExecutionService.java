@@ -7,8 +7,10 @@ public class SelfHostExecutionService {
 
     private final WebClient webClient;
 
-    public SelfHostExecutionService(String pistonServerUrl) {
-        this.webClient = WebClient.builder().baseUrl(pistonServerUrl).build();
+    private static final String PISTON_SERVER_URL = "https://piston-api-vizuwgtgsa-uc.a.run.app/api/v2";
+
+    public SelfHostExecutionService() {
+        this.webClient = WebClient.builder().baseUrl(PISTON_SERVER_URL).build();
     }
 
     public Mono<SelfHostResponse> execute(SelfHostExecutionData data) {

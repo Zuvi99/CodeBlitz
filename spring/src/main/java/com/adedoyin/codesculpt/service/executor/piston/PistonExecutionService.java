@@ -7,8 +7,10 @@ public class PistonExecutionService {
 
     private final WebClient webClient;
 
-    public PistonExecutionService(String pistonAPIUrl) {
-        this.webClient = WebClient.builder().baseUrl(pistonAPIUrl).build();
+    private static final String PISTON_API_URL = "https://emkc.org/api/v2/piston";
+
+    public PistonExecutionService() {
+        this.webClient = WebClient.builder().baseUrl(PISTON_API_URL).build();
     }
 
     public Mono<PistonResponse> execute(PistonExecutionData data) {
