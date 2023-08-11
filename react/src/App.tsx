@@ -55,7 +55,7 @@ function App() {
 
 
     const executeCode = () => {
-		fetch("http://localhost:8080/api/execute", {
+		fetch("https://spring-mvc-vizuwgtgsa-uc.a.run.app/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
