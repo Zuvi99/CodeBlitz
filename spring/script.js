@@ -17,10 +17,10 @@ export const options = {
                 // { target: 50, duration: '1m'},
                 // {target: 70, duration: '1m'},
                 // {target: 100, duration: '1m'},
-                {target: 10, duration: '30s'}
+                {target: 100, duration: '20s'}
             ],
-            startVUs: 0,
-            gracefulRampDown: '30s',
+            startVUs: 100,
+            gracefulRampDown: '15s',
             exec: 'scenario_2',
         },
     },
@@ -31,7 +31,7 @@ export function scenario_2() {
 
     // app-test
     response = http.post(
-        'https://spring-mvc-vizuwgtgsa-uc.a.run.app/api/execute',
+        'http://localhost:8080/api/execute',
         '{"language":"PYTHON","sourceCode":"print(\'Hello\')","executor":"SELFHOSTED"}',
         {
             headers: {
