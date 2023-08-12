@@ -55,7 +55,7 @@ function App() {
 
 
     const executeCode = () => {
-		fetch("https://spring-mvc-vizuwgtgsa-uc.a.run.app/api/execute", {
+		fetch("https://spring-reactive-web-vizuwgtgsa-uc.a.run.app/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
@@ -127,7 +127,7 @@ function App() {
                                                             }}
                                                             value={"java"}
                                                         >
-                                                            Java (15.0.2)
+                                                            Java (OpenJDK 15.0.2)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -163,7 +163,7 @@ function App() {
                                                             }}
                                                             value={"cpp"}
                                                         >
-                                                            C++ (10.2.0)
+                                                            C++ (GCC 10.2.0)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {
@@ -199,7 +199,7 @@ function App() {
                                                             }}
                                                             value={"c"}
                                                         >
-                                                            C (3.2.2)
+                                                            C (GCC 3.2.2)
                                                         </MenuItemOption>
                                                         <MenuItemOption
                                                             onClick={() => {

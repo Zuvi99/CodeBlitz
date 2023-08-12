@@ -52,7 +52,7 @@ use strict;
 use warnings;
   
 # Print function 
-print("Hello, Perl!}\\n");`,
+print("Hello, Perl!\\n");`,
     rust: `// CodeSculpt - Designed and Developed by Adedoyin Adepetun
 fn main() {
     // Statements here are executed when the compiled binary is called.

@@ -1,0 +1,5 @@
+{
+  "language": "PYTHON",
+  "sourceCode": "print(1)",
+  "executor": "SELFHOSTED"
+}
