@@ -1,4 +1,4 @@
-import { Card, CardBody, useColorMode } from "@chakra-ui/react";
+import {Card, CardBody, Text, useColorMode} from "@chakra-ui/react";
 import Editor, { Monaco } from "@monaco-editor/react";
 import { SupportedLanguage } from "./types.ts";
 import { useMemo } from "react";
@@ -80,8 +80,9 @@ const CodeEditor = ({ language, editorRef }: CodeEditorProps) => {
 	return (
 		<Card w={"100%"} variant={"elevated"}>
 			<CardBody>
+                <Text fontWeight={"bold"} paddingBottom={"10px"} paddingLeft={"10px"}>Code Editor</Text>
 				<Editor
-					height="500px"
+					height="485px"
 					language={language}
 					value={sampleCode}
 					theme={colorMode === "light" ? "vs-light" : "vs-dark"}

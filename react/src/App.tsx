@@ -29,6 +29,7 @@ import { editor } from "monaco-editor";
 import { SupportedLanguage } from "./types.ts";
 import CodeEditor from "./CodeEditor.tsx";
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+import {LuSunMoon} from "react-icons/lu";
 
 function App() {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -53,6 +54,16 @@ function App() {
     const [outputCheckMessage, setOutputCheckMessage] = useState<string>("");
 
     const [outputCheckMessageColor, setOutputCheckMessageColor] = useState<string>("");
+
+    const [taskSwitchStateMessage, setTaskSwitchStateMessage] = useState<string>("Task Inactive");
+
+    const handleTaskSwitchStateMessage = () => {
+        if (taskSwitchRef.current?.checked == true) {
+            setTaskSwitchStateMessage("Task Active");
+        } else  {
+            setTaskSwitchStateMessage("Task Inactive");
+        }
+    }
 
 
 	const clearTextArea = () => {
@@ -115,13 +126,11 @@ function App() {
 				if (output1 === output2) {
 					console.log(output1);
 					console.log(output2);
-					console.log("match");
                     setOutputCheckMessage("Output Match! Well done!");
                     setOutputCheckMessageColor("green");
 				} else {
 					console.log(output1);
 					console.log(output2);
-                    console.log("Output does not match. Retry.")
 					setOutputCheckMessage("Output does not match. Retry.");
                     setOutputCheckMessageColor("red");
                 }
@@ -135,7 +144,7 @@ function App() {
 	};
 
 	function handleRun() {
-	    setTimeout(outputMatchCheck, 3450);
+	    setTimeout(outputMatchCheck, 3500);
 	}
 
 	const toast = useToast();
@@ -146,12 +155,12 @@ function App() {
 				templateColumns="repeat(4, 1fr)"
 				gap={4}
 				minWidth={"1050px"}
-				margin={"35px"}
+				margin={"25px"}
 			>
-				<GridItem colSpan={3} paddingTop={"10px"}>
+				<GridItem colSpan={3}>
 					<Box>
 						<VStack>
-							<Box paddingTop={"10px"} w={"100%"}>
+							<Box w={"100%"}>
 								<Card variant={"elevated"}>
 									<CardBody>
 										<Heading>CodeSculpt</Heading>
@@ -317,7 +326,7 @@ function App() {
 															title: "Executing....",
 															status: "info",
 															position: "top",
-															duration: 1000,
+															duration: 1500,
 															isClosable: true,
 														});
 														clearTextArea();
@@ -343,6 +352,9 @@ function App() {
 												ref={pistonStdIn}
 												w={"200px"}
 												placeholder={"Standard Input"}
+                                                _placeholder={{
+                                                    fontFamily: "sans-serif"
+                                                }}
 											/>
 										</Box>
 										<Box>
@@ -350,6 +362,9 @@ function App() {
 												ref={pistonCommandLineRef}
 												w={"200px"}
 												placeholder={"CMD Args"}
+                                                _placeholder={{
+                                                    fontFamily: "sans-serif"
+                                                }}
 											/>
 										</Box>
 									</HStack>
@@ -359,8 +374,8 @@ function App() {
 					</Box>
 				</GridItem>
 				<GridItem width={"450px"}>
-					<Box w={"100%"} paddingLeft={"335px"} paddingBottom={"20px"}>
-						<Button size={"md"} onClick={toggleColorMode}>
+					<Box w={"100%"} paddingLeft={"315px"} paddingBottom={"20px"}>
+						<Button size={"md"} onClick={toggleColorMode} rightIcon={<LuSunMoon />}>
 							{colorMode === "light" ? "Dark" : "Light"} Mode
 						</Button>
 					</Box>
@@ -407,6 +422,9 @@ function App() {
 										<Textarea
 											ref={executionOutputRef}
 											placeholder={"Results would be displayed here:"}
+                                            _placeholder={{
+                                                fontFamily: "sans-serif"
+                                            }}
 											value={executionOutput}
 											onChange={(e) => setExecutionOutput(e.target.value)}
 											width={"100%"}
@@ -426,6 +444,9 @@ function App() {
                                     <Text fontWeight={"bold"} paddingLeft={"4px"} paddingBottom={"4px"}> Task Description</Text>
                                     <Textarea
 										placeholder={"Describe task here:"}
+                                        _placeholder={{
+                                            fontFamily: "sans-serif"
+                                        }}
 										width={"100%"}
 										height={"200px"}
 									/>
@@ -434,7 +455,10 @@ function App() {
                                     <Text fontWeight={"bold"} paddingLeft={"4px"} paddingBottom={"4px"}>Expected Output</Text>
 									<Textarea
 										ref={expectedOutputRef}
-										placeholder={"Set the expected output here:"}
+										placeholder={"Define the expected output here:"}
+                                        _placeholder={{
+                                            fontFamily: "sans-serif"
+                                        }}
 										defaultValue={expectedOutput}
 										width={"100%"}
 										height={"100px"}
@@ -443,10 +467,10 @@ function App() {
 								<Box paddingTop={"10px"}>
                                     <HStack>
                                         <Box>
-                                            <Switch ref={taskSwitchRef}></Switch>
+                                            <Switch ref={taskSwitchRef} onChange={handleTaskSwitchStateMessage}></Switch>
                                         </Box>
                                         <Box paddingTop={"4px"}>
-                                            <Text fontWeight={"bold"}>Create Task</Text>
+                                            <Text fontWeight={"bold"}>{taskSwitchStateMessage}</Text>
                                         </Box>
                                     </HStack>
 								</Box>
@@ -455,18 +479,18 @@ function App() {
 					</Box>
 				</GridItem>
 			</Grid>
-			<Box as={"footer"} textAlign={"center"}>
-				<Text fontWeight={"bold"}>
-					Developed by{" "}
-					<Link
-						href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"}
-						color={"blue"}
-						isExternal
-					>
-						Adedoyin Adepetun
-					</Link>
-				</Text>
-			</Box>
+                <Box as={"footer"} textAlign={"center"} bottom={"0"} width={"100%"}>
+                    <Text fontWeight={"bold"}>
+                        Developed by{" "}
+                        <Link
+                            href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"}
+                            color={"blue"}
+                            isExternal
+                        >
+                            Adedoyin Adepetun
+                        </Link>
+                    </Text>
+                </Box>
 		</>
 	);
 }
