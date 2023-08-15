@@ -79,7 +79,7 @@ function App() {
 	const pistonCommandLineRef = useRef<HTMLTextAreaElement>(null);
 
 	const executeCode = () => {
-		fetch("https://spring-reactive-web-vizuwgtgsa-uc.a.run.app/api/execute", {
+		fetch("https://bucket4j-dot-axial-crane-395116.uc.r.appspot.com/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
 			body: JSON.stringify({
