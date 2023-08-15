@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { BsFillPlayFill } from "react-icons/bs";
-import { useRef, useState } from "react";
+import {useMemo, useRef, useState} from "react";
 import { IoCopy } from "react-icons/io5";
 import { editor } from "monaco-editor";
 import { SupportedLanguage } from "./types.ts";
@@ -92,7 +92,23 @@ function App() {
 			}),
 		})
 			.then((response) =>
-				response.json().then((data) => setExecutionOutput(data.output)),
+				response.json().then((data) => {
+                    const executionOutput = data.output
+                    setExecutionOutput(executionOutput);
+                    console.log("executionOutput", executionOutput)
+                    console.log("expectedOutput", expectedOutput)
+                    if (taskSwitchRef.current?.checked == true) {
+                        if (executionOutputRef.current && expectedOutputRef.current) {
+                            if (executionOutput.trim() == expectedOutputRef.current?.value.trim()) {
+                                setOutputCheckMessage("Output Matched! Well done!");
+                                setOutputCheckMessageColor("green");
+                            } else {
+                                setOutputCheckMessage("Output does not match. Retry.");
+                                setOutputCheckMessageColor("red");
+                            }
+                        }
+                    }
+                }),
 			)
 			.catch((e) => {
 				console.error(e);
@@ -109,6 +125,8 @@ function App() {
 
 	const executionOutputRef = useRef<HTMLTextAreaElement | null>(null);
 
+    const readOnly = useMemo(() => !taskSwitchRef.current?.checked, [taskSwitchRef.current?.checked])
+
 	function copyEditorCode() {
 		if (editorRef.current) {
 			const selectedText = editorRef.current.getValue();
@@ -118,34 +136,6 @@ function App() {
 		}
 	}
 
-	function outputMatchCheck() {
-		if (taskSwitchRef.current?.checked == true) {
-			if (executionOutputRef.current && expectedOutputRef.current) {
-				const output1 = executionOutputRef.current?.value.trim();
-				const output2 = expectedOutputRef.current?.value.trim();
-				if (output1 === output2) {
-					console.log(output1);
-					console.log(output2);
-                    setOutputCheckMessage("Output Matched! Well done!");
-                    setOutputCheckMessageColor("green");
-				} else {
-					console.log(output1);
-					console.log(output2);
-					setOutputCheckMessage("Output does not match. Retry.");
-                    setOutputCheckMessageColor("red");
-                }
-			}
-		}
-	}
-
-	const sequentiallyExecute = () => {
-		executeCode();
-		handleRun();
-	};
-
-	function handleRun() {
-	    setTimeout(outputMatchCheck, 3500);
-	}
 
 	const toast = useToast();
 
@@ -331,7 +321,7 @@ function App() {
 														});
 														clearTextArea();
                                                         clearOutputCheckMessage();
-														sequentiallyExecute();
+														executeCode();
 													}}
 												>
 													Run
@@ -449,6 +439,7 @@ function App() {
                                         }}
 										width={"100%"}
 										height={"200px"}
+                                        readOnly={readOnly}
 									/>
 								</Box>
 								<Box paddingTop={"10px"}>
@@ -462,6 +453,7 @@ function App() {
 										defaultValue={expectedOutput}
 										width={"100%"}
 										height={"100px"}
+                                        readOnly={readOnly}
 									/>
 								</Box>
 								<Box paddingTop={"10px"}>
