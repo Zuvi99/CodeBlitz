@@ -11,7 +11,7 @@ import {
     MenuButton,
     MenuItemOption,
     MenuList,
-    MenuOptionGroup,
+    MenuOptionGroup, Switch,
     Text,
     Textarea,
     useColorMode,
@@ -42,6 +42,8 @@ function App() {
 	const handleExecutorChange = (executor: string) => {
 		setSelectedExecutor(executor);
 	};
+
+    const [expectedOutput] = useState<string>("")
 
 	const [executionOutput, setExecutionOutput] = useState<string>("");
 
@@ -80,7 +82,13 @@ function App() {
 	const editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null> =
 		useRef<IStandaloneCodeEditor | null>(null);
 
-	function copyEditorCode() {
+    const taskSwitchRef = useRef<HTMLInputElement | null>(null);
+
+    const expectedOutputRef = useRef<HTMLTextAreaElement | null>(null);
+
+    const executionOutputRef = useRef<HTMLTextAreaElement | null>(null);
+
+    function copyEditorCode() {
 		if (editorRef.current) {
 			const selectedText = editorRef.current.getValue();
 			if (selectedText) {
@@ -88,6 +96,33 @@ function App() {
 			}
 		}
 	}
+
+    function outputMatchCheck() {
+        if (taskSwitchRef.current?.checked == true) {
+            if (executionOutputRef.current && expectedOutputRef.current) {
+                const output1 = executionOutputRef.current?.value.trim();
+                const output2 = expectedOutputRef.current?.value.trim();
+                if (output1 === output2) {
+                    console.log(output1);
+                    console.log(output2);
+                    console.log("match");
+                } else {
+                    console.log(output1);
+                    console.log(output2);
+                    console.log("no match");
+                }
+            }
+        }
+    }
+
+    const sequentiallyExecute = () => {
+        executeCode();
+        outputMatchCheck();
+    }
+
+    // function handleRun() {
+    //     setTimeout(outputMatchCheck, 3500);
+    // }
 
 	const toast = useToast();
 
@@ -259,8 +294,9 @@ function App() {
                                                             duration: 1000,
                                                             isClosable: true,
                                                         });
-                                                        executeCode();
                                                         clearTextArea();
+                                                        sequentiallyExecute();
+                                                        // handleRun();
                                                     }}
                                                 >
                                                     Run
@@ -297,7 +333,7 @@ function App() {
                     </Box>
                 </GridItem>
                 <GridItem width={"450px"}>
-                    <Box w={"100%"} paddingLeft={'300px'} paddingBottom={'150px'}>
+                    <Box w={"100%"} paddingLeft={'300px'} paddingBottom={'80px'}>
                         <Button size={"md"} onClick={toggleColorMode}>
                             {colorMode === "light" ? "Dark" : "Light"} Mode
                         </Button>
@@ -337,16 +373,46 @@ function App() {
                                     </Box>
                                     <Box w={"100%"}>
                                         <Textarea
+                                            ref={executionOutputRef}
                                             placeholder={"Result"}
                                             value={executionOutput}
                                             onChange={(e) => setExecutionOutput(e.target.value)}
                                             width={"100%"}
-                                            height={"350px"}
+                                            height={"200px"}
                                             readOnly
                                             fontFamily={"monospace"}
                                         />
                                     </Box>
                                 </VStack>
+                            </CardBody>
+                        </Card>
+                    </Box>
+                    <Box paddingTop={'10px'}>
+                        <Card variant={"elevated"}>
+                            <CardBody>
+                                <Box>
+                                    <Textarea
+                                        placeholder={"Task Description"}
+                                        width={"100%"}
+                                        height={"200px"}
+                                    />
+                                </Box>
+                                <Box paddingTop={"10px"}>
+                                    <Textarea
+                                        ref={expectedOutputRef}
+                                        placeholder={"Expected Output"}
+                                        defaultValue={expectedOutput}
+                                        width={"100%"}
+                                        height={"100px"}
+                                    />
+                                </Box>
+                                <Box paddingTop={"10px"}>
+                                    <Switch
+                                        ref={taskSwitchRef}
+                                    >
+                                        Create Task
+                                    </Switch>
+                                </Box>
                             </CardBody>
                         </Card>
                     </Box>
