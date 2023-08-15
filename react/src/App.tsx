@@ -126,7 +126,7 @@ function App() {
 				if (output1 === output2) {
 					console.log(output1);
 					console.log(output2);
-                    setOutputCheckMessage("Output Match! Well done!");
+                    setOutputCheckMessage("Output Matched! Well done!");
                     setOutputCheckMessageColor("green");
 				} else {
 					console.log(output1);
@@ -415,7 +415,7 @@ function App() {
 										</Menu>
 									</Box>
                                     <Box w={"100%"}>
-                                        <Badge color={outputCheckMessageColor}>{outputCheckMessage}</Badge>
+                                        <Badge color={outputCheckMessageColor} fontSize={"14px"}>{outputCheckMessage}</Badge>
                                     </Box>
 									<Box w={"100%"}>
                                         <Text fontWeight={"bold"} paddingLeft={"4px"} paddingBottom={"4px"}>Result</Text>
