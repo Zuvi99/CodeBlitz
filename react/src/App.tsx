@@ -135,7 +135,7 @@ function App() {
 	};
 
 	function handleRun() {
-	    setTimeout(outputMatchCheck, 3500);
+	    setTimeout(outputMatchCheck, 3450);
 	}
 
 	const toast = useToast();
