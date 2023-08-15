@@ -419,7 +419,7 @@ function App() {
 											onChange={(e) => setExecutionOutput(e.target.value)}
 											width={"100%"}
 											height={"200px"}
-											readOnly
+											readOnly={true}
 											fontFamily={"monospace"}
 										/>
 									</Box>
@@ -439,7 +439,7 @@ function App() {
                                         }}
 										width={"100%"}
 										height={"200px"}
-                                        readOnly={readOnly}
+                                        isDisabled={readOnly}
 									/>
 								</Box>
 								<Box paddingTop={"10px"}>
@@ -453,7 +453,7 @@ function App() {
 										defaultValue={expectedOutput}
 										width={"100%"}
 										height={"100px"}
-                                        readOnly={readOnly}
+                                        isDisabled={readOnly}
 									/>
 								</Box>
 								<Box paddingTop={"10px"}>
