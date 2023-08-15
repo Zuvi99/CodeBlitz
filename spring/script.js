@@ -14,9 +14,9 @@ export const options = {
             executor: 'ramping-vus',
             gracefulStop: '30s',
             stages: [
-                {target: 200, duration: '1m'}
+                {target: 1000, duration: '1m'}
             ],
-            startVUs: 0,
+            startVUs: 1000,
             gracefulRampDown: '15s',
             exec: 'scenario_2',
         },
@@ -28,7 +28,7 @@ export function scenario_2() {
 
     // app-test
     response = http.post(
-        'https://spring-reactive-web-vizuwgtgsa-uc.a.run.app/api/execute',
+        'https://spring-mvc-vizuwgtgsa-uc.a.run.app/api/execute',
         '{"language":"PYTHON","sourceCode":"print(\'Hello\')","executor":"SELFHOSTED"}',
         {
             headers: {

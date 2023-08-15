@@ -1,4 +1,5 @@
 import {
+    Badge,
     Box,
     Button,
     Card,
@@ -6,12 +7,14 @@ import {
     Grid,
     GridItem,
     Heading,
-    HStack, Link,
+    HStack,
+    Link,
     Menu,
     MenuButton,
     MenuItemOption,
     MenuList,
-    MenuOptionGroup, Switch,
+    MenuOptionGroup,
+    Switch,
     Text,
     Textarea,
     useColorMode,
@@ -43,20 +46,28 @@ function App() {
 		setSelectedExecutor(executor);
 	};
 
-    const [expectedOutput] = useState<string>("")
+	const [expectedOutput] = useState<string>("");
 
 	const [executionOutput, setExecutionOutput] = useState<string>("");
+
+    const [outputCheckMessage, setOutputCheckMessage] = useState<string>("");
+
+    const [outputCheckMessageColor, setOutputCheckMessageColor] = useState<string>("");
+
 
 	const clearTextArea = () => {
 		setExecutionOutput("");
 	};
 
-    const pistonStdIn = useRef<HTMLTextAreaElement>(null);
+    const clearOutputCheckMessage = () => {
+        setOutputCheckMessage("");
+    }
 
-    const pistonCommandLineRef = useRef<HTMLTextAreaElement>(null);
+	const pistonStdIn = useRef<HTMLTextAreaElement>(null);
 
+	const pistonCommandLineRef = useRef<HTMLTextAreaElement>(null);
 
-    const executeCode = () => {
+	const executeCode = () => {
 		fetch("https://spring-reactive-web-vizuwgtgsa-uc.a.run.app/api/execute", {
 			method: "POST",
 			headers: { "Content-type": "application/json" },
@@ -64,8 +75,9 @@ function App() {
 				language: selectedLanguage.toUpperCase(),
 				sourceCode: editorRef.current?.getValue(),
 				executor: selectedExecutor.toUpperCase(),
-                pistonStandardInput: pistonStdIn.current?.value,
-                pistonCommandLineArguments: pistonCommandLineRef.current?.value.split(/\r?\n/),
+				pistonStandardInput: pistonStdIn.current?.value,
+				pistonCommandLineArguments:
+					pistonCommandLineRef.current?.value.split(/\r?\n/),
 			}),
 		})
 			.then((response) =>
@@ -77,18 +89,16 @@ function App() {
 			});
 	};
 
-
-
 	const editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null> =
 		useRef<IStandaloneCodeEditor | null>(null);
 
-    const taskSwitchRef = useRef<HTMLInputElement | null>(null);
+	const taskSwitchRef = useRef<HTMLInputElement | null>(null);
 
-    const expectedOutputRef = useRef<HTMLTextAreaElement | null>(null);
+	const expectedOutputRef = useRef<HTMLTextAreaElement | null>(null);
 
-    const executionOutputRef = useRef<HTMLTextAreaElement | null>(null);
+	const executionOutputRef = useRef<HTMLTextAreaElement | null>(null);
 
-    function copyEditorCode() {
+	function copyEditorCode() {
 		if (editorRef.current) {
 			const selectedText = editorRef.current.getValue();
 			if (selectedText) {
@@ -97,336 +107,367 @@ function App() {
 		}
 	}
 
-    function outputMatchCheck() {
-        if (taskSwitchRef.current?.checked == true) {
-            if (executionOutputRef.current && expectedOutputRef.current) {
-                const output1 = executionOutputRef.current?.value.trim();
-                const output2 = expectedOutputRef.current?.value.trim();
-                if (output1 === output2) {
-                    console.log(output1);
-                    console.log(output2);
-                    console.log("match");
-                } else {
-                    console.log(output1);
-                    console.log(output2);
-                    console.log("no match");
+	function outputMatchCheck() {
+		if (taskSwitchRef.current?.checked == true) {
+			if (executionOutputRef.current && expectedOutputRef.current) {
+				const output1 = executionOutputRef.current?.value.trim();
+				const output2 = expectedOutputRef.current?.value.trim();
+				if (output1 === output2) {
+					console.log(output1);
+					console.log(output2);
+					console.log("match");
+                    setOutputCheckMessage("Output Match! Well done!");
+                    setOutputCheckMessageColor("green");
+				} else {
+					console.log(output1);
+					console.log(output2);
+                    console.log("Output does not match. Retry.")
+					setOutputCheckMessage("Output does not match. Retry.");
+                    setOutputCheckMessageColor("red");
                 }
-            }
-        }
-    }
+			}
+		}
+	}
 
-    const sequentiallyExecute = () => {
-        executeCode();
-        outputMatchCheck();
-    }
+	const sequentiallyExecute = () => {
+		executeCode();
+		handleRun();
+	};
 
-    // function handleRun() {
-    //     setTimeout(outputMatchCheck, 3500);
-    // }
+	function handleRun() {
+	    setTimeout(outputMatchCheck, 3500);
+	}
 
 	const toast = useToast();
 
 	return (
-        <>
-            <Grid
-                templateColumns="repeat(4, 1fr)"
-                gap={4}
-                minWidth={"1050px"}
-                margin={"35px"}
-            >
-                <GridItem colSpan={3}>
-                    <Box>
-                        <VStack>
-                            <Box paddingTop={"10px"} w={"100%"}>
-                                <Card variant={"elevated"}>
-                                    <CardBody>
-                                        <Heading>CodeSculpt</Heading>
-                                    </CardBody>
-                                </Card>
-                            </Box>
-                            <Card w="100%" variant={"elevated"}>
-                                <CardBody>
-                                    <HStack justify={"space-between"}>
+		<>
+			<Grid
+				templateColumns="repeat(4, 1fr)"
+				gap={4}
+				minWidth={"1050px"}
+				margin={"35px"}
+			>
+				<GridItem colSpan={3} paddingTop={"10px"}>
+					<Box>
+						<VStack>
+							<Box paddingTop={"10px"} w={"100%"}>
+								<Card variant={"elevated"}>
+									<CardBody>
+										<Heading>CodeSculpt</Heading>
+									</CardBody>
+								</Card>
+							</Box>
+							<Card w="100%" variant={"elevated"}>
+								<CardBody>
+									<HStack justify={"space-between"}>
+										<Box>
+											<Menu>
+												<MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+													Language: {selectedLanguage}
+												</MenuButton>
+												<MenuList>
+													<MenuOptionGroup type={"radio"}>
+														<MenuItemOption
+															id={"1"}
+															onClick={() => {
+																handleLanguageChange("java");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"java"}
+														>
+															Java (OpenJDK 15.0.2)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("python");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"python"}
+														>
+															Python (3.10.0)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("typescript");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"typescript"}
+														>
+															TypeScript (5.0.3)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("ruby");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"ruby"}
+														>
+															Ruby (3.0.1)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("cpp");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"cpp"}
+														>
+															C++ (GCC 10.2.0)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("dart");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"dart"}
+														>
+															Dart (2.19.6)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("pascal");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"pascal"}
+														>
+															Pascal (3.2.2)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("swift");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"swift"}
+														>
+															Swift (5.3.3)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("c");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"c"}
+														>
+															C (GCC 3.2.2)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("elixir");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"elixir"}
+														>
+															Elixir (1.11.3)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("perl");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"perl"}
+														>
+															Perl (5.36.0)
+														</MenuItemOption>
+														<MenuItemOption
+															onClick={() => {
+																handleLanguageChange("rust");
+																clearTextArea();
+                                                                clearOutputCheckMessage();
+															}}
+															value={"rust"}
+														>
+															Rust (1.68.2)
+														</MenuItemOption>
+													</MenuOptionGroup>
+												</MenuList>
+											</Menu>
+										</Box>
+										<Box>
+											<HStack spacing={"24px"}>
+												<Button
+													rightIcon={<IoCopy />}
+													onClick={() => {
+														toast({
+															title: "Copied to clipboard!",
+															status: "success",
+															position: "top",
+															duration: 1500,
+															isClosable: true,
+														});
+														copyEditorCode();
+													}}
+												>
+													Copy code to clipboard
+												</Button>
+												<Button
+													rightIcon={<BsFillPlayFill />}
+													onClick={() => {
+														toast({
+															title: "Executing....",
+															status: "info",
+															position: "top",
+															duration: 1000,
+															isClosable: true,
+														});
+														clearTextArea();
+                                                        clearOutputCheckMessage();
+														sequentiallyExecute();
+													}}
+												>
+													Run
+												</Button>
+											</HStack>
+										</Box>
+									</HStack>
+								</CardBody>
+							</Card>
+							<Box w={"100%"}>
+								<CodeEditor language={selectedLanguage} editorRef={editorRef} />
+							</Box>
+							<Card w={"100%"} variant={"elevated"}>
+								<CardBody>
+									<HStack gap={25}>
+										<Box>
+											<Textarea
+												ref={pistonStdIn}
+												w={"200px"}
+												placeholder={"Standard Input"}
+											/>
+										</Box>
+										<Box>
+											<Textarea
+												ref={pistonCommandLineRef}
+												w={"200px"}
+												placeholder={"CMD Args"}
+											/>
+										</Box>
+									</HStack>
+								</CardBody>
+							</Card>
+						</VStack>
+					</Box>
+				</GridItem>
+				<GridItem width={"450px"}>
+					<Box w={"100%"} paddingLeft={"335px"} paddingBottom={"20px"}>
+						<Button size={"md"} onClick={toggleColorMode}>
+							{colorMode === "light" ? "Dark" : "Light"} Mode
+						</Button>
+					</Box>
+					<Box>
+						<Card variant={"elevated"}>
+							<CardBody>
+								<VStack spacing={2.5}>
+									<Box w={"100%"}>
+										<Menu>
+											<MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+												API: {selectedExecutor}
+											</MenuButton>
+											<MenuList>
+												<MenuOptionGroup type={"radio"}>
+													<MenuItemOption
+														onClick={() => {
+															handleExecutorChange("Public");
+															clearTextArea();
+                                                            clearOutputCheckMessage();
+														}}
+														value={"Public"}
+													>
+														Public
+													</MenuItemOption>
+													<MenuItemOption
+														onClick={() => {
+															handleExecutorChange("SelfHosted");
+															clearTextArea();
+                                                            clearOutputCheckMessage()
+														}}
+														value={"SelfHosted"}
+													>
+														SelfHosted
+													</MenuItemOption>
+												</MenuOptionGroup>
+											</MenuList>
+										</Menu>
+									</Box>
+                                    <Box w={"100%"}>
+                                        <Badge color={outputCheckMessageColor}>{outputCheckMessage}</Badge>
+                                    </Box>
+									<Box w={"100%"}>
+                                        <Text fontWeight={"bold"} paddingLeft={"4px"} paddingBottom={"4px"}>Result</Text>
+										<Textarea
+											ref={executionOutputRef}
+											placeholder={"Results would be displayed here:"}
+											value={executionOutput}
+											onChange={(e) => setExecutionOutput(e.target.value)}
+											width={"100%"}
+											height={"200px"}
+											readOnly
+											fontFamily={"monospace"}
+										/>
+									</Box>
+								</VStack>
+							</CardBody>
+						</Card>
+					</Box>
+					<Box paddingTop={"10px"}>
+						<Card variant={"elevated"}>
+							<CardBody>
+								<Box>
+                                    <Text fontWeight={"bold"} paddingLeft={"4px"} paddingBottom={"4px"}> Task Description</Text>
+                                    <Textarea
+										placeholder={"Describe task here:"}
+										width={"100%"}
+										height={"200px"}
+									/>
+								</Box>
+								<Box paddingTop={"10px"}>
+                                    <Text fontWeight={"bold"} paddingLeft={"4px"} paddingBottom={"4px"}>Expected Output</Text>
+									<Textarea
+										ref={expectedOutputRef}
+										placeholder={"Set the expected output here:"}
+										defaultValue={expectedOutput}
+										width={"100%"}
+										height={"100px"}
+									/>
+								</Box>
+								<Box paddingTop={"10px"}>
+                                    <HStack>
                                         <Box>
-                                            <Menu>
-                                                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                                                    Language: {selectedLanguage}
-                                                </MenuButton>
-                                                <MenuList>
-                                                    <MenuOptionGroup type={"radio"}>
-                                                        <MenuItemOption
-                                                            id={"1"}
-                                                            onClick={() => {
-                                                                handleLanguageChange("java");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"java"}
-                                                        >
-                                                            Java (OpenJDK 15.0.2)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("python");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"python"}
-                                                        >
-                                                            Python (3.10.0)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("typescript");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"typescript"}
-                                                        >
-                                                            TypeScript (5.0.3)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("ruby");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"ruby"}
-                                                        >
-                                                            Ruby (3.0.1)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("cpp");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"cpp"}
-                                                        >
-                                                            C++ (GCC 10.2.0)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("dart");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"dart"}
-                                                        >
-                                                            Dart (2.19.6)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("pascal");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"pascal"}
-                                                        >
-                                                            Pascal (3.2.2)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("swift");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"swift"}
-                                                        >
-                                                            Swift (5.3.3)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("c");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"c"}
-                                                        >
-                                                            C (GCC 3.2.2)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("elixir");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"elixir"}
-                                                        >
-                                                            Elixir (1.11.3)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("perl");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"perl"}
-                                                        >
-                                                            Perl (5.36.0)
-                                                        </MenuItemOption>
-                                                        <MenuItemOption
-                                                            onClick={() => {
-                                                                handleLanguageChange("rust");
-                                                                clearTextArea();
-                                                            }}
-                                                            value={"rust"}
-                                                        >
-                                                            Rust (1.68.2)
-                                                        </MenuItemOption>
-                                                    </MenuOptionGroup>
-                                                </MenuList>
-                                            </Menu>
+                                            <Switch ref={taskSwitchRef}></Switch>
                                         </Box>
-                                        <Box>
-                                            <HStack spacing={"24px"}>
-                                                <Button
-                                                    rightIcon={<IoCopy />}
-                                                    onClick={() => {
-                                                        toast({
-                                                            title: "Copied to clipboard!",
-                                                            status: "success",
-                                                            position: "top",
-                                                            duration: 1500,
-                                                            isClosable: true,
-                                                        });
-                                                        copyEditorCode();
-                                                    }}
-                                                >
-                                                    Copy code to clipboard
-                                                </Button>
-                                                <Button
-                                                    rightIcon={<BsFillPlayFill />}
-                                                    onClick={() => {
-                                                        toast({
-                                                            title: "Executing....",
-                                                            status: "info",
-                                                            position: "top",
-                                                            duration: 1000,
-                                                            isClosable: true,
-                                                        });
-                                                        clearTextArea();
-                                                        sequentiallyExecute();
-                                                        // handleRun();
-                                                    }}
-                                                >
-                                                    Run
-                                                </Button>
-                                            </HStack>
+                                        <Box paddingTop={"4px"}>
+                                            <Text fontWeight={"bold"}>Create Task</Text>
                                         </Box>
                                     </HStack>
-                                </CardBody>
-                            </Card>
-                            <Box w={"100%"}>
-                                <CodeEditor language={selectedLanguage} editorRef={editorRef} />
-                            </Box>
-                            <Card w={"100%"} variant={"elevated"}>
-                                <CardBody>
-                                    <HStack gap={25}>
-                                        <Box>
-                                            <Textarea
-                                                ref={pistonStdIn}
-                                                w={"200px"}
-                                                placeholder={"Standard Input"}
-                                            />
-                                        </Box>
-                                        <Box>
-                                            <Textarea
-                                                ref={pistonCommandLineRef}
-                                                w={"200px"}
-                                                placeholder={"CMD Args"}
-                                            />
-                                        </Box>
-                                    </HStack>
-                                </CardBody>
-                            </Card>
-                        </VStack>
-                    </Box>
-                </GridItem>
-                <GridItem width={"450px"}>
-                    <Box w={"100%"} paddingLeft={'300px'} paddingBottom={'80px'}>
-                        <Button size={"md"} onClick={toggleColorMode}>
-                            {colorMode === "light" ? "Dark" : "Light"} Mode
-                        </Button>
-                    </Box>
-                    <Box>
-                        <Card variant={"elevated"}>
-                            <CardBody>
-                                <VStack spacing={10}>
-                                    <Box w={"100%"}>
-                                        <Menu>
-                                            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                                                API: {selectedExecutor}
-                                            </MenuButton>
-                                            <MenuList>
-                                                <MenuOptionGroup type={"radio"}>
-                                                    <MenuItemOption
-                                                        onClick={() => {
-                                                            handleExecutorChange("Public");
-                                                            clearTextArea();
-                                                        }}
-                                                        value={"Public"}
-                                                    >
-                                                        Public
-                                                    </MenuItemOption>
-                                                    <MenuItemOption
-                                                        onClick={() => {
-                                                            handleExecutorChange("SelfHosted");
-                                                            clearTextArea();
-                                                        }}
-                                                        value={"SelfHosted"}
-                                                    >
-                                                        SelfHosted
-                                                    </MenuItemOption>
-                                                </MenuOptionGroup>
-                                            </MenuList>
-                                        </Menu>
-                                    </Box>
-                                    <Box w={"100%"}>
-                                        <Textarea
-                                            ref={executionOutputRef}
-                                            placeholder={"Result"}
-                                            value={executionOutput}
-                                            onChange={(e) => setExecutionOutput(e.target.value)}
-                                            width={"100%"}
-                                            height={"200px"}
-                                            readOnly
-                                            fontFamily={"monospace"}
-                                        />
-                                    </Box>
-                                </VStack>
-                            </CardBody>
-                        </Card>
-                    </Box>
-                    <Box paddingTop={'10px'}>
-                        <Card variant={"elevated"}>
-                            <CardBody>
-                                <Box>
-                                    <Textarea
-                                        placeholder={"Task Description"}
-                                        width={"100%"}
-                                        height={"200px"}
-                                    />
-                                </Box>
-                                <Box paddingTop={"10px"}>
-                                    <Textarea
-                                        ref={expectedOutputRef}
-                                        placeholder={"Expected Output"}
-                                        defaultValue={expectedOutput}
-                                        width={"100%"}
-                                        height={"100px"}
-                                    />
-                                </Box>
-                                <Box paddingTop={"10px"}>
-                                    <Switch
-                                        ref={taskSwitchRef}
-                                    >
-                                        Create Task
-                                    </Switch>
-                                </Box>
-                            </CardBody>
-                        </Card>
-                    </Box>
-                </GridItem>
-            </Grid>
-            <Box as={'footer'} textAlign={'center'}>
-                <Text fontWeight={"bold"}>
-                    Developed by{" "}
-                    <Link href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"} color={"blue"} isExternal>
-                        Adedoyin Adepetun
-                    </Link>
-                </Text>
-            </Box>
-        </>
+								</Box>
+							</CardBody>
+						</Card>
+					</Box>
+				</GridItem>
+			</Grid>
+			<Box as={"footer"} textAlign={"center"}>
+				<Text fontWeight={"bold"}>
+					Developed by{" "}
+					<Link
+						href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"}
+						color={"blue"}
+						isExternal
+					>
+						Adedoyin Adepetun
+					</Link>
+				</Text>
+			</Box>
+		</>
 	);
 }
 
