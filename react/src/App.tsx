@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { BsFillPlayFill } from "react-icons/bs";
-import {useMemo, useRef, useState} from "react";
+import React, {useMemo, useRef, useState} from "react";
 import { IoCopy } from "react-icons/io5";
 import { editor } from "monaco-editor";
 import { SupportedLanguage } from "./types.ts";
@@ -57,14 +57,30 @@ function App() {
 
     const [taskSwitchStateMessage, setTaskSwitchStateMessage] = useState<string>("Task Inactive");
 
+    const pistonStdIn = useRef<HTMLTextAreaElement>(null);
+
+    const pistonCommandLineRef = useRef<HTMLTextAreaElement>(null);
+
+    const editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null> =
+        useRef<IStandaloneCodeEditor | null>(null);
+
+    const taskSwitchRef = useRef<HTMLInputElement | null>(null);
+
+    const expectedOutputRef = useRef<HTMLTextAreaElement | null>(null);
+
+    const executionOutputRef = useRef<HTMLTextAreaElement | null>(null);
+
+    const readOnly = useMemo(() => !taskSwitchRef.current?.checked, [taskSwitchRef.current?.checked]);
+
+    const toast = useToast();
+
     const handleTaskSwitchStateMessage = () => {
-        if (taskSwitchRef.current?.checked == true) {
+        if (taskSwitchRef.current?.checked) {
             setTaskSwitchStateMessage("Task Active");
         } else  {
             setTaskSwitchStateMessage("Task Inactive");
         }
     }
-
 
 	const clearTextArea = () => {
 		setExecutionOutput("");
@@ -73,10 +89,6 @@ function App() {
     const clearOutputCheckMessage = () => {
         setOutputCheckMessage("");
     }
-
-	const pistonStdIn = useRef<HTMLTextAreaElement>(null);
-
-	const pistonCommandLineRef = useRef<HTMLTextAreaElement>(null);
 
 	const executeCode = () => {
 		fetch("https://bucket4j-dot-axial-crane-395116.uc.r.appspot.com/api/execute", {
@@ -87,8 +99,7 @@ function App() {
 				sourceCode: editorRef.current?.getValue(),
 				executor: selectedExecutor.toUpperCase(),
 				pistonStandardInput: pistonStdIn.current?.value,
-				pistonCommandLineArguments:
-					pistonCommandLineRef.current?.value.split(/\r?\n/),
+				pistonCommandLineArguments: pistonCommandLineRef.current?.value.split(/\r?\n/),
 			}),
 		})
 			.then((response) =>
@@ -97,7 +108,7 @@ function App() {
                     setExecutionOutput(executionOutput);
                     console.log("executionOutput", executionOutput)
                     console.log("expectedOutput", expectedOutput)
-                    if (taskSwitchRef.current?.checked == true) {
+                    if (taskSwitchRef.current?.checked) {
                         if (executionOutputRef.current && expectedOutputRef.current) {
                             if (executionOutput.trim() == expectedOutputRef.current?.value.trim()) {
                                 setOutputCheckMessage("Output Matched! Well done!");
@@ -116,17 +127,6 @@ function App() {
 			});
 	};
 
-	const editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null> =
-		useRef<IStandaloneCodeEditor | null>(null);
-
-	const taskSwitchRef = useRef<HTMLInputElement | null>(null);
-
-	const expectedOutputRef = useRef<HTMLTextAreaElement | null>(null);
-
-	const executionOutputRef = useRef<HTMLTextAreaElement | null>(null);
-
-    const readOnly = useMemo(() => !taskSwitchRef.current?.checked, [taskSwitchRef.current?.checked])
-
 	function copyEditorCode() {
 		if (editorRef.current) {
 			const selectedText = editorRef.current.getValue();
@@ -135,9 +135,6 @@ function App() {
 			}
 		}
 	}
-
-
-	const toast = useToast();
 
 	return (
 		<>
