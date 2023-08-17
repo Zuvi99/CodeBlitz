@@ -278,7 +278,7 @@ function App() {
 															}}
 															value={"c"}
 														>
-															C (GCC 3.2.2)
+															C (GCC 10.2.0)
 														</MenuItemOption>
 														<MenuItemOption
 															onClick={() => {
