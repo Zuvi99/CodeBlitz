@@ -167,7 +167,7 @@ function App() {
 							<Box w={"100%"}>
 								<Card variant={"elevated"}>
 									<CardBody>
-										<Heading>CodeSculpt</Heading>
+										<Heading fontFamily={"monospace"}>CodeSculpt</Heading>
 									</CardBody>
 								</Card>
 							</Box>
@@ -525,15 +525,17 @@ function App() {
 				</GridItem>
 			</Grid>
 			<Box as={"footer"} textAlign={"center"} bottom={"0"} width={"100%"}>
-				<Text fontWeight={"bold"}>
+				<Text>
 					Developed by{" "}
 					<Link
 						href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"}
 						color={"blue"}
 						isExternal
+                        fontWeight={"bold"}
 					>
 						Adedoyin Adepetun
 					</Link>
+                    , Supervised by Prof. Madasar Shah
 				</Text>
 			</Box>
 		</>
