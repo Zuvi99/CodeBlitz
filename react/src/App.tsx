@@ -389,7 +389,7 @@ function App() {
 					</Box>
 				</GridItem>
 				<GridItem width={"450px"}>
-					<Box w={"100%"} paddingLeft={"315px"} paddingBottom={"20px"}>
+					<Box w={"100%"} paddingLeft={"309px"} paddingBottom={"20px"}>
 						<Button
 							size={"md"}
 							onClick={toggleColorMode}
