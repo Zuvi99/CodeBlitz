@@ -167,7 +167,7 @@ function App() {
 							<Box w={"100%"}>
 								<Card variant={"elevated"}>
 									<CardBody>
-										<Heading fontFamily={"monospace"}>CodeSculpt</Heading>
+										<Heading>CodeSculpt</Heading>
 									</CardBody>
 								</Card>
 							</Box>
@@ -531,11 +531,11 @@ function App() {
 						href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"}
 						color={"blue"}
 						isExternal
-                        fontWeight={"bold"}
+						fontWeight={"bold"}
 					>
 						Adedoyin Adepetun
 					</Link>
-                    , Supervised by Prof. Madasar Shah
+					, Supervised by Prof. Madasar Shah
 				</Text>
 			</Box>
 		</>
