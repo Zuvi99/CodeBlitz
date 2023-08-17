@@ -1,4 +1,4 @@
-import {Card, CardBody, Text, useColorMode} from "@chakra-ui/react";
+import { Card, CardBody, Text, useColorMode } from "@chakra-ui/react";
 import Editor, { Monaco } from "@monaco-editor/react";
 import { SupportedLanguage } from "./types.ts";
 import { useMemo } from "react";
@@ -56,7 +56,6 @@ print("Hello, Perl!\\n");`,
 	rust: `// CodeSculpt - Designed and Developed by Adedoyin Adepetun
 fn main() {
     // Statements here are executed when the compiled binary is called.
-
     // Print text to the console.
     println!("Hello, Rust!");
 }`,
@@ -80,7 +79,9 @@ const CodeEditor = ({ language, editorRef }: CodeEditorProps) => {
 	return (
 		<Card w={"100%"} variant={"elevated"}>
 			<CardBody>
-                <Text fontWeight={"bold"} paddingBottom={"10px"} paddingLeft={"10px"}>Code Editor</Text>
+				<Text fontWeight={"bold"} paddingBottom={"10px"} paddingLeft={"10px"}>
+					Code Editor
+				</Text>
 				<Editor
 					height="485px"
 					language={language}

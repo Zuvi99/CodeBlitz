@@ -1,35 +1,36 @@
 import {
-    Badge,
-    Box,
-    Button,
-    Card,
-    CardBody,
-    Grid,
-    GridItem,
-    Heading,
-    HStack,
-    Link,
-    Menu,
-    MenuButton,
-    MenuItemOption,
-    MenuList,
-    MenuOptionGroup,
-    Switch,
-    Text,
-    Textarea,
-    useColorMode,
-    useToast,
-    VStack,
+	Badge,
+	Box,
+	Button,
+	Card,
+	CardBody,
+	Grid,
+	GridItem,
+	Heading,
+	HStack,
+	Link,
+	Menu,
+	MenuButton,
+	MenuItemOption,
+	MenuList,
+	MenuOptionGroup,
+	Switch,
+	Text,
+	Textarea,
+	useColorMode,
+	useToast,
+	VStack,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { BsFillPlayFill } from "react-icons/bs";
-import React, {useMemo, useRef, useState} from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { IoCopy } from "react-icons/io5";
 import { editor } from "monaco-editor";
 import { SupportedLanguage } from "./types.ts";
 import CodeEditor from "./CodeEditor.tsx";
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
-import {LuSunMoon} from "react-icons/lu";
+import { LuSunMoon } from "react-icons/lu";
+import { MenuLanguages } from "./menu.ts";
 
 function App() {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -39,6 +40,40 @@ function App() {
 
 	const [selectedExecutor, setSelectedExecutor] = useState<string>("Public");
 
+	const [expectedOutput] = useState<string>("");
+
+	const [executionOutput, setExecutionOutput] = useState<string>("");
+
+	const [outputCheckMessage, setOutputCheckMessage] = useState<string>("");
+
+	const [outputCheckMessageColor, setOutputCheckMessageColor] =
+		useState<string>("");
+
+	const [taskSwitchStateMessage, setTaskSwitchStateMessage] =
+		useState<string>("Task Inactive");
+
+	const [menuLanguage, setMenuLanguage] = useState<MenuLanguages>("Java");
+
+	const pistonStdIn = useRef<HTMLTextAreaElement>(null);
+
+	const pistonCommandLineRef = useRef<HTMLTextAreaElement>(null);
+
+	const editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null> =
+		useRef<IStandaloneCodeEditor | null>(null);
+
+	const taskSwitchRef = useRef<HTMLInputElement | null>(null);
+
+	const expectedOutputRef = useRef<HTMLTextAreaElement | null>(null);
+
+	const executionOutputRef = useRef<HTMLTextAreaElement | null>(null);
+
+	const readOnly = useMemo(
+		() => !taskSwitchRef.current?.checked,
+		[taskSwitchRef.current?.checked],
+	);
+
+	const toast = useToast();
+
 	const handleLanguageChange = (language: SupportedLanguage) => {
 		setSelectedLanguage(language);
 	};
@@ -47,79 +82,61 @@ function App() {
 		setSelectedExecutor(executor);
 	};
 
-	const [expectedOutput] = useState<string>("");
-
-	const [executionOutput, setExecutionOutput] = useState<string>("");
-
-    const [outputCheckMessage, setOutputCheckMessage] = useState<string>("");
-
-    const [outputCheckMessageColor, setOutputCheckMessageColor] = useState<string>("");
-
-    const [taskSwitchStateMessage, setTaskSwitchStateMessage] = useState<string>("Task Inactive");
-
-    const pistonStdIn = useRef<HTMLTextAreaElement>(null);
-
-    const pistonCommandLineRef = useRef<HTMLTextAreaElement>(null);
-
-    const editorRef: React.MutableRefObject<editor.IStandaloneCodeEditor | null> =
-        useRef<IStandaloneCodeEditor | null>(null);
-
-    const taskSwitchRef = useRef<HTMLInputElement | null>(null);
-
-    const expectedOutputRef = useRef<HTMLTextAreaElement | null>(null);
-
-    const executionOutputRef = useRef<HTMLTextAreaElement | null>(null);
-
-    const readOnly = useMemo(() => !taskSwitchRef.current?.checked, [taskSwitchRef.current?.checked]);
-
-    const toast = useToast();
-
-    const handleTaskSwitchStateMessage = () => {
-        if (taskSwitchRef.current?.checked) {
-            setTaskSwitchStateMessage("Task Active");
-        } else  {
-            setTaskSwitchStateMessage("Task Inactive");
-        }
-    }
+	const handleTaskSwitchStateMessage = () => {
+		if (taskSwitchRef.current?.checked) {
+			setTaskSwitchStateMessage("Task Active");
+		} else {
+			setTaskSwitchStateMessage("Task Inactive");
+		}
+	};
 
 	const clearTextArea = () => {
 		setExecutionOutput("");
 	};
 
-    const clearOutputCheckMessage = () => {
-        setOutputCheckMessage("");
-    }
+	const clearOutputCheckMessage = () => {
+		setOutputCheckMessage("");
+	};
+
+	const changeMenuLanguage = (menuLang: MenuLanguages) => {
+		setMenuLanguage(menuLang);
+	};
 
 	const executeCode = () => {
-		fetch("https://bucket4j-dot-axial-crane-395116.uc.r.appspot.com/api/execute", {
-			method: "POST",
-			headers: { "Content-type": "application/json" },
-			body: JSON.stringify({
-				language: selectedLanguage.toUpperCase(),
-				sourceCode: editorRef.current?.getValue(),
-				executor: selectedExecutor.toUpperCase(),
-				pistonStandardInput: pistonStdIn.current?.value,
-				pistonCommandLineArguments: pistonCommandLineRef.current?.value.split(/\r?\n/),
-			}),
-		})
+		fetch(
+			"https://bucket4j-dot-axial-crane-395116.uc.r.appspot.com/api/execute",
+			{
+				method: "POST",
+				headers: { "Content-type": "application/json" },
+				body: JSON.stringify({
+					language: selectedLanguage.toUpperCase(),
+					sourceCode: editorRef.current?.getValue(),
+					executor: selectedExecutor.toUpperCase(),
+					pistonStandardInput: pistonStdIn.current?.value,
+					pistonCommandLineArguments:
+						pistonCommandLineRef.current?.value.split(/\r?\n/),
+				}),
+			},
+		)
 			.then((response) =>
 				response.json().then((data) => {
-                    const executionOutput = data.output
-                    setExecutionOutput(executionOutput);
-                    console.log("executionOutput", executionOutput)
-                    console.log("expectedOutput", expectedOutput)
-                    if (taskSwitchRef.current?.checked) {
-                        if (executionOutputRef.current && expectedOutputRef.current) {
-                            if (executionOutput.trim() == expectedOutputRef.current?.value.trim()) {
-                                setOutputCheckMessage("Output Matched! Well done!");
-                                setOutputCheckMessageColor("green");
-                            } else {
-                                setOutputCheckMessage("Output does not match. Retry.");
-                                setOutputCheckMessageColor("red");
-                            }
-                        }
-                    }
-                }),
+					const executionOutput = data.output;
+					setExecutionOutput(executionOutput);
+					if (taskSwitchRef.current?.checked) {
+						if (executionOutputRef.current && expectedOutputRef.current) {
+							if (
+								executionOutput.trim() ==
+								expectedOutputRef.current?.value.trim()
+							) {
+								setOutputCheckMessage("Output Matched! Well done!");
+								setOutputCheckMessageColor("green");
+							} else {
+								setOutputCheckMessage("Output does not match. Retry.");
+								setOutputCheckMessageColor("red");
+							}
+						}
+					}
+				}),
 			)
 			.catch((e) => {
 				console.error(e);
@@ -160,16 +177,16 @@ function App() {
 										<Box>
 											<Menu>
 												<MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-													Language: {selectedLanguage}
+													Language: {menuLanguage}
 												</MenuButton>
 												<MenuList>
 													<MenuOptionGroup type={"radio"}>
 														<MenuItemOption
-															id={"1"}
 															onClick={() => {
 																handleLanguageChange("java");
+																changeMenuLanguage("Java");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"java"}
 														>
@@ -178,8 +195,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("python");
+																changeMenuLanguage("Python");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"python"}
 														>
@@ -188,8 +206,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("typescript");
+																changeMenuLanguage("TypeScript");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"typescript"}
 														>
@@ -198,8 +217,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("ruby");
+																changeMenuLanguage("Ruby");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"ruby"}
 														>
@@ -208,8 +228,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("cpp");
+																changeMenuLanguage("C++");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"cpp"}
 														>
@@ -218,8 +239,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("dart");
+																changeMenuLanguage("Dart");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"dart"}
 														>
@@ -228,8 +250,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("pascal");
+																changeMenuLanguage("Pascal");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"pascal"}
 														>
@@ -238,8 +261,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("swift");
+																changeMenuLanguage("Swift");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"swift"}
 														>
@@ -248,8 +272,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("c");
+																changeMenuLanguage("C");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"c"}
 														>
@@ -258,8 +283,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("elixir");
+																changeMenuLanguage("Elixir");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"elixir"}
 														>
@@ -268,8 +294,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("perl");
+																changeMenuLanguage("Perl");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"perl"}
 														>
@@ -278,8 +305,9 @@ function App() {
 														<MenuItemOption
 															onClick={() => {
 																handleLanguageChange("rust");
+																changeMenuLanguage("Rust");
 																clearTextArea();
-                                                                clearOutputCheckMessage();
+																clearOutputCheckMessage();
 															}}
 															value={"rust"}
 														>
@@ -317,7 +345,7 @@ function App() {
 															isClosable: true,
 														});
 														clearTextArea();
-                                                        clearOutputCheckMessage();
+														clearOutputCheckMessage();
 														executeCode();
 													}}
 												>
@@ -339,9 +367,9 @@ function App() {
 												ref={pistonStdIn}
 												w={"200px"}
 												placeholder={"Standard Input"}
-                                                _placeholder={{
-                                                    fontFamily: "sans-serif"
-                                                }}
+												_placeholder={{
+													fontFamily: "sans-serif",
+												}}
 											/>
 										</Box>
 										<Box>
@@ -349,9 +377,9 @@ function App() {
 												ref={pistonCommandLineRef}
 												w={"200px"}
 												placeholder={"CMD Args"}
-                                                _placeholder={{
-                                                    fontFamily: "sans-serif"
-                                                }}
+												_placeholder={{
+													fontFamily: "sans-serif",
+												}}
 											/>
 										</Box>
 									</HStack>
@@ -362,7 +390,11 @@ function App() {
 				</GridItem>
 				<GridItem width={"450px"}>
 					<Box w={"100%"} paddingLeft={"315px"} paddingBottom={"20px"}>
-						<Button size={"md"} onClick={toggleColorMode} rightIcon={<LuSunMoon />}>
+						<Button
+							size={"md"}
+							onClick={toggleColorMode}
+							rightIcon={<LuSunMoon />}
+						>
 							{colorMode === "light" ? "Dark" : "Light"} Mode
 						</Button>
 					</Box>
@@ -381,7 +413,7 @@ function App() {
 														onClick={() => {
 															handleExecutorChange("Public");
 															clearTextArea();
-                                                            clearOutputCheckMessage();
+															clearOutputCheckMessage();
 														}}
 														value={"Public"}
 													>
@@ -391,7 +423,7 @@ function App() {
 														onClick={() => {
 															handleExecutorChange("SelfHosted");
 															clearTextArea();
-                                                            clearOutputCheckMessage()
+															clearOutputCheckMessage();
 														}}
 														value={"SelfHosted"}
 													>
@@ -401,17 +433,25 @@ function App() {
 											</MenuList>
 										</Menu>
 									</Box>
-                                    <Box w={"100%"}>
-                                        <Badge color={outputCheckMessageColor} fontSize={"14px"}>{outputCheckMessage}</Badge>
-                                    </Box>
 									<Box w={"100%"}>
-                                        <Text fontWeight={"bold"} paddingLeft={"4px"} paddingBottom={"4px"}>Result</Text>
+										<Badge color={outputCheckMessageColor} fontSize={"14px"}>
+											{outputCheckMessage}
+										</Badge>
+									</Box>
+									<Box w={"100%"}>
+										<Text
+											fontWeight={"bold"}
+											paddingLeft={"4px"}
+											paddingBottom={"4px"}
+										>
+											Result
+										</Text>
 										<Textarea
 											ref={executionOutputRef}
 											placeholder={"Results would be displayed here:"}
-                                            _placeholder={{
-                                                fontFamily: "sans-serif"
-                                            }}
+											_placeholder={{
+												fontFamily: "sans-serif",
+											}}
 											value={executionOutput}
 											onChange={(e) => setExecutionOutput(e.target.value)}
 											width={"100%"}
@@ -428,58 +468,74 @@ function App() {
 						<Card variant={"elevated"}>
 							<CardBody>
 								<Box>
-                                    <Text fontWeight={"bold"} paddingLeft={"4px"} paddingBottom={"4px"}> Task Description</Text>
-                                    <Textarea
+									<Text
+										fontWeight={"bold"}
+										paddingLeft={"4px"}
+										paddingBottom={"4px"}
+									>
+										{" "}
+										Task Description
+									</Text>
+									<Textarea
 										placeholder={"Describe task here:"}
-                                        _placeholder={{
-                                            fontFamily: "sans-serif"
-                                        }}
+										_placeholder={{
+											fontFamily: "sans-serif",
+										}}
 										width={"100%"}
 										height={"200px"}
-                                        isDisabled={readOnly}
+										isDisabled={readOnly}
 									/>
 								</Box>
 								<Box paddingTop={"10px"}>
-                                    <Text fontWeight={"bold"} paddingLeft={"4px"} paddingBottom={"4px"}>Expected Output</Text>
+									<Text
+										fontWeight={"bold"}
+										paddingLeft={"4px"}
+										paddingBottom={"4px"}
+									>
+										Expected Output
+									</Text>
 									<Textarea
 										ref={expectedOutputRef}
 										placeholder={"Define the expected output here:"}
-                                        _placeholder={{
-                                            fontFamily: "sans-serif"
-                                        }}
+										_placeholder={{
+											fontFamily: "sans-serif",
+										}}
 										defaultValue={expectedOutput}
 										width={"100%"}
 										height={"100px"}
-                                        isDisabled={readOnly}
+										isDisabled={readOnly}
 									/>
 								</Box>
 								<Box paddingTop={"10px"}>
-                                    <HStack>
-                                        <Box>
-                                            <Switch ref={taskSwitchRef} onChange={handleTaskSwitchStateMessage}></Switch>
-                                        </Box>
-                                        <Box paddingTop={"4px"}>
-                                            <Text fontWeight={"bold"}>{taskSwitchStateMessage}</Text>
-                                        </Box>
-                                    </HStack>
+									<HStack>
+										<Box>
+											<Switch
+												ref={taskSwitchRef}
+												onChange={handleTaskSwitchStateMessage}
+											></Switch>
+										</Box>
+										<Box paddingTop={"4px"}>
+											<Text fontWeight={"bold"}>{taskSwitchStateMessage}</Text>
+										</Box>
+									</HStack>
 								</Box>
 							</CardBody>
 						</Card>
 					</Box>
 				</GridItem>
 			</Grid>
-                <Box as={"footer"} textAlign={"center"} bottom={"0"} width={"100%"}>
-                    <Text fontWeight={"bold"}>
-                        Developed by{" "}
-                        <Link
-                            href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"}
-                            color={"blue"}
-                            isExternal
-                        >
-                            Adedoyin Adepetun
-                        </Link>
-                    </Text>
-                </Box>
+			<Box as={"footer"} textAlign={"center"} bottom={"0"} width={"100%"}>
+				<Text fontWeight={"bold"}>
+					Developed by{" "}
+					<Link
+						href={"https://www.linkedin.com/in/adedoyin-adepetun-42a18a1a5"}
+						color={"blue"}
+						isExternal
+					>
+						Adedoyin Adepetun
+					</Link>
+				</Text>
+			</Box>
 		</>
 	);
 }
