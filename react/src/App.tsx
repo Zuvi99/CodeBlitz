@@ -84,6 +84,10 @@ function App() {
         setResultPlaceholder("Executing.....")
     }
 
+    const defaultPlaceholder = () => {
+        setResultPlaceholder("Results would be displayed here:");
+    }
+
     const handleExecutorChange = (executor: string) => {
         setSelectedExecutor(executor);
     };
@@ -193,6 +197,7 @@ function App() {
                                                                 changeMenuLanguage("Java");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"java"}
                                                         >
@@ -215,6 +220,7 @@ function App() {
                                                                 changeMenuLanguage("TypeScript");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"typescript"}
                                                         >
@@ -226,6 +232,7 @@ function App() {
                                                                 changeMenuLanguage("Ruby");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"ruby"}
                                                         >
@@ -237,6 +244,7 @@ function App() {
                                                                 changeMenuLanguage("C++");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"cpp"}
                                                         >
@@ -248,6 +256,7 @@ function App() {
                                                                 changeMenuLanguage("Dart");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"dart"}
                                                         >
@@ -259,6 +268,7 @@ function App() {
                                                                 changeMenuLanguage("Pascal");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"pascal"}
                                                         >
@@ -270,6 +280,7 @@ function App() {
                                                                 changeMenuLanguage("Swift");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"swift"}
                                                         >
@@ -281,6 +292,7 @@ function App() {
                                                                 changeMenuLanguage("C");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"c"}
                                                         >
@@ -292,6 +304,7 @@ function App() {
                                                                 changeMenuLanguage("Elixir");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"elixir"}
                                                         >
@@ -303,6 +316,7 @@ function App() {
                                                                 changeMenuLanguage("Perl");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"perl"}
                                                         >
@@ -314,6 +328,7 @@ function App() {
                                                                 changeMenuLanguage("Rust");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"rust"}
                                                         >
@@ -421,6 +436,7 @@ function App() {
                                                             handleExecutorChange("Public");
                                                             clearTextArea();
                                                             clearOutputCheckMessage();
+                                                            defaultPlaceholder();
                                                         }}
                                                         value={"Public"}
                                                     >
@@ -431,6 +447,7 @@ function App() {
                                                             handleExecutorChange("SelfHosted");
                                                             clearTextArea();
                                                             clearOutputCheckMessage();
+                                                            defaultPlaceholder();
                                                         }}
                                                         value={"SelfHosted"}
                                                     >
