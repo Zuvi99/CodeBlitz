@@ -209,6 +209,7 @@ function App() {
                                                                 changeMenuLanguage("Python");
                                                                 clearTextArea();
                                                                 clearOutputCheckMessage();
+                                                                defaultPlaceholder();
                                                             }}
                                                             value={"python"}
                                                         >
