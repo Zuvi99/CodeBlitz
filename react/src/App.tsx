@@ -67,6 +67,8 @@ function App() {
 
 	const executionOutputRef = useRef<HTMLTextAreaElement | null>(null);
 
+	const [resultPlaceholder, setResultPlaceholder] = useState<string>("Results would be displayed here:");
+
 	const readOnly = useMemo(
 		() => !taskSwitchRef.current?.checked,
 		[taskSwitchRef.current?.checked],
@@ -101,6 +103,12 @@ function App() {
 	const changeMenuLanguage = (menuLang: MenuLanguages) => {
 		setMenuLanguage(menuLang);
 	};
+
+	const [resultPlaceholder, setResultPlaceholder] = useState<string>("Results would be displayed here:");
+
+	const handlePlaceholderChange = () => {
+        setResultPlaceholder("Executing.....")
+    }
 
 	const executeCode = () => {
 		fetch(
@@ -344,6 +352,7 @@ function App() {
 															duration: 1500,
 															isClosable: true,
 														});
+														handlePlaceholderChange();
 														clearTextArea();
 														clearOutputCheckMessage();
 														executeCode();
@@ -448,7 +457,7 @@ function App() {
 										</Text>
 										<Textarea
 											ref={executionOutputRef}
-											placeholder={"Results would be displayed here:"}
+											placeholder={resultPlaceholder}
 											_placeholder={{
 												fontFamily: "sans-serif",
 											}}
