@@ -560,7 +560,7 @@ function App() {
                     >
                         Adedoyin Adepetun
                     </Link>
-                    , Supervised by Prof. Madasar Shah
+                    , Supervised by Dr. Madasar Shah
                 </Text>
             </Box>
         </>
