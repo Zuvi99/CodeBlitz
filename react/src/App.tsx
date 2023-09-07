@@ -119,7 +119,7 @@ function App() {
 	const executeCode = () => {
 		const startTime = performance.now();
 		fetch(
-			"https://bucket4j-dot-axial-crane-395116.uc.r.appspot.com/api/execute",
+			"http://localhost:8080/api/execute",
 			{
 				method: "POST",
 				headers: { "Content-type": "application/json" },
@@ -507,6 +507,7 @@ function App() {
 											readOnly={true}
 											value={executionTime + "ms"}
 											width={"60%"}
+                                            fontFamily={"monospace"}
 										/>
 									</Box>
 								</VStack>
