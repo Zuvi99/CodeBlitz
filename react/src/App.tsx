@@ -503,7 +503,6 @@ function App() {
 											Execution Time
 										</Text>
 										<Textarea
-											placeholder={"Time taken to execute code."}
 											readOnly={true}
 											value={executionTime + "ms"}
 											width={"60%"}
@@ -531,7 +530,7 @@ function App() {
 											fontFamily: "sans-serif",
 										}}
 										width={"100%"}
-										height={"188px"}
+										height={"168px"}
 										isDisabled={readOnly}
 									/>
 								</Box>
