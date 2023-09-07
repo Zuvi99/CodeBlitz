@@ -424,8 +424,8 @@ function App() {
 						<Card variant={"elevated"}>
 							<CardBody>
 								<VStack spacing={0.1}>
-									<HStack spacing={"130px"}>
-										<Box w={"100%"}>
+									<HStack spacing={"100px"}>
+										<Box>
 											<Menu>
 												<MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
 													API: {selectedExecutor}
@@ -503,6 +503,7 @@ function App() {
 											Execution Time
 										</Text>
 										<Textarea
+											placeholder={"Time taken to execute code."}
 											readOnly={true}
 											value={executionTime + "ms"}
 											width={"60%"}
