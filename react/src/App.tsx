@@ -108,6 +108,10 @@ function App() {
 		setExecutionOutput("");
 	};
 
+    const clearExecutionTime = () => {
+        setExecutionTime(0);
+    }
+
 	const clearOutputCheckMessage = () => {
 		setOutputCheckMessage("");
 	};
@@ -206,6 +210,7 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
+                                                                clearExecutionTime();
 															}}
 															value={"java"}
 														>
@@ -218,7 +223,8 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
-															}}
+                                                                clearExecutionTime();
+                                                            }}
 															value={"python"}
 														>
 															Python (3.10.0)
@@ -230,7 +236,8 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
-															}}
+                                                                clearExecutionTime();
+                                                            }}
 															value={"typescript"}
 														>
 															TypeScript (5.0.3)
@@ -242,7 +249,8 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
-															}}
+                                                                clearExecutionTime();
+                                                            }}
 															value={"ruby"}
 														>
 															Ruby (3.0.1)
@@ -254,7 +262,8 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
-															}}
+                                                                clearExecutionTime();
+                                                            }}
 															value={"cpp"}
 														>
 															C++ (GCC 10.2.0)
@@ -266,7 +275,8 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
-															}}
+                                                                clearExecutionTime();
+                                                            }}
 															value={"dart"}
 														>
 															Dart (2.19.6)
@@ -278,6 +288,7 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
+                                                                clearExecutionTime();
 															}}
 															value={"pascal"}
 														>
@@ -290,6 +301,7 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
+                                                                clearExecutionTime();
 															}}
 															value={"swift"}
 														>
@@ -302,6 +314,7 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
+                                                                clearExecutionTime();
 															}}
 															value={"c"}
 														>
@@ -314,6 +327,7 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
+                                                                clearExecutionTime();
 															}}
 															value={"elixir"}
 														>
@@ -326,6 +340,7 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
+                                                                clearExecutionTime();
 															}}
 															value={"perl"}
 														>
@@ -338,6 +353,7 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
+                                                                clearExecutionTime();
 															}}
 															value={"rust"}
 														>
@@ -378,6 +394,7 @@ function App() {
 														clearTextArea();
 														clearOutputCheckMessage();
 														executeCode();
+                                                        clearExecutionTime();
 													}}
 												>
 													Run
@@ -438,6 +455,7 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
+                                                                clearExecutionTime();
 															}}
 															value={"Public"}
 														>
@@ -449,6 +467,7 @@ function App() {
 																clearTextArea();
 																clearOutputCheckMessage();
 																defaultPlaceholder();
+                                                                clearExecutionTime();
 															}}
 															value={"SelfHosted"}
 														>
