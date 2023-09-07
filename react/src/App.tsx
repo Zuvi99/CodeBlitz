@@ -119,7 +119,7 @@ function App() {
 	const executeCode = () => {
 		const startTime = performance.now();
 		fetch(
-			"http://localhost:8080/api/execute",
+			"https://bucket4j-dot-axial-crane-395116.uc.r.appspot.com/api/execute",
 			{
 				method: "POST",
 				headers: { "Content-type": "application/json" },
