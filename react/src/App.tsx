@@ -189,7 +189,11 @@ function App() {
 							<Box w={"100%"}>
 								<Card variant={"elevated"}>
 									<CardBody>
-										<Heading>CodeBlitz</Heading>
+										<Heading>
+                                            <Link
+                                                href={"https://codeblitzz.vercel.app/"}
+                                            >CodeBlitz</Link>
+                                        </Heading>
 									</CardBody>
 								</Card>
 							</Box>
